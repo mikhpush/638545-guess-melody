@@ -1,7 +1,7 @@
 # Личный проект «Угадай мелодию» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Пушков](https://up.htmlacademy.ru/ecmascript/5/user/638545).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгений Фаллер]`.
 
 ---
 
