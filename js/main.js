@@ -40,7 +40,7 @@ const screens = Array.from(myTemplate.querySelectorAll(`.main`));
 
 function showScreen(i) {
   i = i < 0 ? screens.length - 1 : i;
-  i = i > screens.length ? 0 : i;
+  i = i > screens.length-1 ? 0 : i;
   currentIndex = i;
   // alert(`currentIndex = ${currentIndex}, при этом i = ${i}`  );
   selectScreen(screens[currentIndex]);
