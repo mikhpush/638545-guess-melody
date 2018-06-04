@@ -1,7 +1,8 @@
 // Экран приветствия 
 
-const mainWelcome = document.createElement(`DIV`);
-mainWelcome.innerHTML = `<section class="main main--welcome">
+const mainWelcome = document.createElement(`section`);
+mainWelcome.className = `main main--welcome`;
+mainWelcome.innerHTML = `
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
     <button class="main-play">Начать игру</button>
     <h2 class="title main-title">Правила игры</h2>
@@ -10,7 +11,6 @@ mainWelcome.innerHTML = `<section class="main main--welcome">
       Ошибиться можно 3 раза.<br>
       Удачи!
     </p>
-  </section>`;
+  `;
 
-const mainElement = document.querySelector(`.main`);
-mainElement.appendChild(mainWelcome);
+export default mainWelcome;

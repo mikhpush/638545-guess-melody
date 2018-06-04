@@ -64,7 +64,7 @@ gameArtist.innerHTML = `<a class="play-again play-again__wrap" href="#">
       </form>
     </div>`;
 
-
+const mainAnswer = document.querySelectorAll('.main-answer');
 
 export default gameArtist;
-export {mainAnswer, play};
+export {mainAnswer};

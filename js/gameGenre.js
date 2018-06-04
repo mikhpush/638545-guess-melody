@@ -90,6 +90,7 @@ gameGenre.innerHTML = `
 
 const genreAnswer = document.querySelector('genre-answer-send');
 
+
 export default gameGenre;
 export {genreAnswer};
 

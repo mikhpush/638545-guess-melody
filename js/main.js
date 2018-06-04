@@ -1,33 +1,16 @@
+import mainWelcome from './mainWelcome.js';
 import gameArtist from './gameArtist.js';
 import mainAnswer from './gameArtist.js';
-import playAgain from './gameArtist.js';
-
 import gameGenre from './gameGenre.js';
 import genreAnswer from './gameGenre.js';
-
-
 import resultWin from './gameResultWin.js';
 import resultLossTime from './gameResultTime.js';
 import resultLossAttepts from './gameResultAttepts.js';
 
 
-
-
-
-const mainWelcome = document.createElement(`section`);
-mainWelcome.className = `main main--welcome`;
-mainWelcome.innerHTML = `
-    <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
-    <button class="main-play">Начать игру</button>
-    <h2 class="title main-title">Правила игры</h2>
-    <p class="text main-text">
-      Правила просты&nbsp;— за&nbsp;5 минут ответить на все вопросы.<br>
-      Ошибиться можно 3 раза.<br>
-      Удачи!
-    </p>`;
-
 const mainElement = document.querySelector(`.main`);
 mainElement.appendChild(mainWelcome);
+
 
 const buttonPlay = document.querySelector('.main-play'); 
 buttonPlay.addEventListener(`click`, () => {
@@ -35,18 +18,39 @@ buttonPlay.addEventListener(`click`, () => {
   mainElement.appendChild(gameArtist);
 });
 
-console.log(playAgain);
-playAgain.addEventListener(`click`, () => {
-  mainElement.innerHTML = ``;
-  mainElement.appendChild(mainWelcome);
-});
 
-mainAnswer.addEventListener(`click`, () => {
+
+const findPlayAgainButton = () => {
+  const playAgain = mainElement.querySelector(`section`);
+  //console.log(playAgain);
+
+  playAgain.querySelector(`.play-again__img`).addEventListener(`click`, () => {
+    mainElement.innerHTML = ``;
+    mainElement.appendChild(mainWelcome);
+  });
+};
+
+setInterval(findPlayAgainButton, 1000);
+
+const findReplayButton = () => {
+  const replay = mainElement.querySelector(`section`);
+  //console.log(replay);
+
+  replay.querySelector(`.main-replay`).addEventListener(`click`, () => {
+    mainElement.innerHTML = ``;
+    mainElement.appendChild(mainWelcome);
+  });
+};
+setInterval(findReplayButton, 1000);
+
+mainAnswer.querySelectorAll('.main-answer').forEach( function (it) {
+  it.addEventListener(`click`, () => {
   mainElement.innerHTML = ``;
   mainElement.appendChild(gameGenre);
-});
+})});
 
-genreAnswer.addEventListener(`click`, () => {
+console.log((genreAnswer.getElementsByClassName(`genre-answer-send`))[0]);
+genreAnswer.getElementsByClassName(`genre-answer-send`)[0].addEventListener(`click`, () => {
   let randomResult = Math.floor(Math.random()*3);
   console.log(randomResult);
   switch (randomResult) {
@@ -68,4 +72,20 @@ genreAnswer.addEventListener(`click`, () => {
   mainElement.innerHTML = ``;
   mainElement.appendChild(randomResult);
 
-})
+});
+
+const disabledSubmit = () => {
+  const checkbox = document.getElementsByName(`answer`);
+  const submit = document.querySelector(`.genre-answer-send`);
+  console.log(checkbox);
+  console.log(submit); 
+  submit.disabled = true;
+
+  checkbox.forEach( function(it) { 
+      if (it.checked == true) {
+      submit.disabled = false;
+    }});
+ 
+}
+
+setInterval(disabledSubmit, 500);

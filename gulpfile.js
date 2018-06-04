@@ -45,7 +45,7 @@ gulp.task(`scripts`, () => {
 */
 
 gulp.task(`scripts`, () => {
-  return gulp.src(`js/main.js`)
+  return gulp.src(`js/*.js`)
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(rollup({}, `iife`))
