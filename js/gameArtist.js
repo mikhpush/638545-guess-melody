@@ -1,6 +1,9 @@
 
 // Игра на выбор исполнителя
 
+import {changeScreen, playAgainButton} from './utils';
+import {gameGenre} from './gameGenre';
+
 const gameArtist = document.createElement(`section`);
 gameArtist.className = `main main--level main--level-artist`;
 gameArtist.innerHTML = `<a class="play-again play-again__wrap" href="#">
@@ -64,7 +67,13 @@ gameArtist.innerHTML = `<a class="play-again play-again__wrap" href="#">
       </form>
     </div>`;
 
-const mainAnswer = document.querySelectorAll('.main-answer');
+const mainAnswer = gameArtist.querySelectorAll('.main-answer');
 
-export default gameArtist;
-export {mainAnswer};
+playAgainButton(gameArtist);
+
+mainAnswer.forEach( function (it) {
+  it.addEventListener(`click`, () => {
+  changeScreen(gameGenre);
+})});
+
+export {gameArtist};

@@ -1,4 +1,5 @@
 // Три экрана с результатами - выигрыш, проигрыш по времени, проигрыш по попыткам
+import {replayButton} from './utils';
 
 const resultLossTime = document.createElement(`section`);
 resultLossTime.className = `main main--result`;
@@ -9,6 +10,7 @@ resultLossTime.innerHTML = `<section class="logo" title="Угадай мелод
     <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
   `;
 
+replayButton(resultLossTime);
 
-export default resultLossTime;
+export {resultLossTime};
     

@@ -1,5 +1,8 @@
 // Экран приветствия 
 
+import {gameArtist} from './gameArtist';
+import {changeScreen} from './utils'
+
 const mainWelcome = document.createElement(`section`);
 mainWelcome.className = `main main--welcome`;
 mainWelcome.innerHTML = `
@@ -13,4 +16,9 @@ mainWelcome.innerHTML = `
     </p>
   `;
 
-export default mainWelcome;
+const buttonPlay = mainWelcome.querySelector('.main-play'); 
+buttonPlay.addEventListener(`click`, () => {
+  changeScreen(gameArtist);
+});
+
+export {mainWelcome};

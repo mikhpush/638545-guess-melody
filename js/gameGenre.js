@@ -1,4 +1,8 @@
 // Игра на выбор жанра
+import {changeScreen, playAgainButton} from './utils';
+import {resultWin} from './gameResultWin';
+import {resultLossTime} from './gameResultTime';
+//import {resultLossAttepts} from './gameResultAttempts';
 
 const gameGenre = document.createElement(`section`);
 gameGenre.className = `main main--level main--level-genre`;
@@ -88,9 +92,45 @@ gameGenre.innerHTML = `
     </div>
     `;
 
-const genreAnswer = document.querySelector('genre-answer-send');
+const genreAnswer = gameGenre.querySelector('.genre-answer-send');
+
+playAgainButton(gameGenre);
+
+genreAnswer.addEventListener(`click`, () => {
+  let randomResult = Math.floor(Math.random()*3);
+  console.log(randomResult);
+  switch (randomResult) {
+    case 0: 
+      randomResult = resultWin;
+      console.log(resultWin);
+      break;
+    case 1:
+      randomResult = resultLossTime;
+      console.log(resultLossTime);
+      break;
+    case 2: 
+      randomResult = resultLossAttepts;
+      console.log(resultLossAttepts);
+      break;
+  };
+
+  console.log(randomResult);
+  changeScreen(randomResult);
+
+});
+
+const checkboxes = gameGenre.querySelectorAll(`.genre-answer input[type="checkbox"]`);
+const submit = gameGenre.querySelector(`.genre-answer-send`);
+
+submit.disabled = true;
+
+checkboxes.forEach( function(it) { 
+  it.addEventListener(`change`, () => {
+    submit.disabled = !it.checked; 
+  })
+});
 
 
-export default gameGenre;
-export {genreAnswer};
+export {gameGenre};
+
 
