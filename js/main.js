@@ -1,63 +1,47 @@
-'use strict';
+//дом
 
-const mainElement = document.querySelector(`.main`);
+import {mainWelcome} from './mainWelcome';
+import {changeScreen} from './utils';
 
-const RIGHT_ARROW = 39;
-const LEFT_ARROW = 37;
+changeScreen(mainWelcome);
 
-let arrowButtons = document.createElement(`DIV`);
-arrowButtons.className = `arrows__wrap`;
-arrowButtons.innerHTML = `<style>
-      .arrows__wrap {
-        position: absolute;
-        top: 135px;
-        left: 50%;
-        margin-left: -56px;
-      }
-      .arrows__btn {
-        background: none;
-        border: 2px solid black;
-        padding: 5px 20px;
-      }
-    </style>
-    <button class="arrows__btn" onclick="showScreen(currentIndex-1)" ><-</button>
-    <button class="arrows__btn" onclick="showScreen(currentIndex+1)">-></button>`;
-
-document.querySelector(`.app`).appendChild(arrowButtons);
+/*
 
 
-let currentIndex = 0;
 
-function selectScreen(element) {
+
+
+
+
+//setInterval(findPlayAgainButton, 1000);
+
+const findReplayButton = () => {
+  const replay = mainElement.querySelector(`section`);
+  replay.querySelector(`.main-replay`).addEventListener(`click`, () => {
   mainElement.innerHTML = ``;
-  mainElement.appendChild(element.cloneNode(true));
+  mainElement.appendChild(mainWelcome);
+  });
+};
+
+//setInterval(findReplayButton, 1000);
+
+
+
+
+
+const disabledSubmit = () => {
+  const checkbox = document.getElementsByName(`answer`);
+  const submit = document.querySelector(`.genre-answer-send`);
+  console.log(checkbox);
+  console.log(submit); 
+  submit.disabled = true;
+
+  checkbox.forEach( function(it) { 
+      if (it.checked == true) {
+      submit.disabled = false;
+    }});
+ 
 }
 
-const myTemplate = document.querySelector(`template`).content; //	content только существует для template?
-
-const screens = Array.from(myTemplate.querySelectorAll(`.main`));
-
-
-function showScreen(i) {
-  i = i < 0 ? screens.length - 1 : i;
-  i = i > screens.length-1 ? 0 : i;
-  currentIndex = i;
-  // alert(`currentIndex = ${currentIndex}, при этом i = ${i}`  );
-  selectScreen(screens[currentIndex]);
-}
-
-
-document.addEventListener(`keydown`, (key) => {
-  switch (key.keyCode) {
-    case LEFT_ARROW:
-      showScreen(currentIndex - 1); // не понимаю, почему не работает оператор decrement --
-      break;
-    case RIGHT_ARROW:
-      showScreen(currentIndex + 1);
-      break;
-  }
-});
-
-showScreen(0);
-
-
+//etInterval(disabledSubmit, 500);
+*/
