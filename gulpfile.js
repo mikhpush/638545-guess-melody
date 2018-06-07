@@ -29,7 +29,6 @@ gulp.task(`test`, function () {
   }));
 });
 
-
 gulp.task(`style`, () => {
   return gulp.src(`sass/style.scss`).
     pipe(plumber()).
@@ -52,6 +51,13 @@ gulp.task(`style`, () => {
     pipe(rename(`style.min.css`)).
     pipe(gulp.dest(`build/css`));
 });
+/*
+gulp.task(`scripts`, () => {
+  return gulp.src(`js/*.js`).
+    pipe(plumber())
+    .pipe(gulp.dest(`build/js`));
+});
+*/
 
 gulp.task(`scripts`, () => {
   return gulp.src(`js/main.js`)
