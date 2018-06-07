@@ -2,7 +2,7 @@
 import {changeScreen, playAgainButton} from './utils';
 import {resultWin} from './gameResultWin';
 import {resultLossTime} from './gameResultTime';
-//import {resultLossAttepts} from './gameResultAttempts';
+import {resultLossAttepts} from './gameResultAttempts';
 
 const gameGenre = document.createElement(`section`);
 gameGenre.className = `main main--level main--level-genre`;
@@ -92,29 +92,24 @@ gameGenre.innerHTML = `
     </div>
     `;
 
-const genreAnswer = gameGenre.querySelector('.genre-answer-send');
+const genreAnswer = gameGenre.querySelector(`.genre-answer-send`);
 
 playAgainButton(gameGenre);
 
 genreAnswer.addEventListener(`click`, () => {
-  let randomResult = Math.floor(Math.random()*3);
-  console.log(randomResult);
+  let randomResult = Math.floor(Math.random() * 3);
   switch (randomResult) {
-    case 0: 
+    case 0:
       randomResult = resultWin;
-      console.log(resultWin);
       break;
     case 1:
       randomResult = resultLossTime;
-      console.log(resultLossTime);
       break;
-    case 2: 
-      randomResult = resultLossAttepts;
-      console.log(resultLossAttepts);
+    case 2:
+    // randomResult = resultLossAttepts;
       break;
-  };
+  }
 
-  console.log(randomResult);
   changeScreen(randomResult);
 
 });
@@ -124,13 +119,11 @@ const submit = gameGenre.querySelector(`.genre-answer-send`);
 
 submit.disabled = true;
 
-checkboxes.forEach( function(it) { 
+checkboxes.forEach(function (it) {
   it.addEventListener(`change`, () => {
-    submit.disabled = !it.checked; 
-  })
+    submit.disabled = !it.checked;
+  });
 });
 
 
 export {gameGenre};
-
-

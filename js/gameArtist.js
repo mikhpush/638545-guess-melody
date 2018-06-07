@@ -3,6 +3,8 @@
 
 import {changeScreen, playAgainButton} from './utils';
 import {gameGenre} from './gameGenre';
+import {gameTimer} from './mainWelcome';
+
 
 const gameArtist = document.createElement(`section`);
 gameArtist.className = `main main--level main--level-artist`;
@@ -16,9 +18,9 @@ gameArtist.innerHTML = `<a class="play-again play-again__wrap" href="#">
         style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
       <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-        <span class="timer-value-mins">05</span><!--
+        <span class="timer-value-mins">01</span><!--
         --><span class="timer-value-dots">:</span><!--
-        --><span class="timer-value-secs">00</span>
+        --><span class="timer-value-secs">03</span>
       </div>
     </svg>
     <div class="main-mistakes">
@@ -67,13 +69,46 @@ gameArtist.innerHTML = `<a class="play-again play-again__wrap" href="#">
       </form>
     </div>`;
 
-const mainAnswer = gameArtist.querySelectorAll('.main-answer');
+
+let userAnswers = [];
+
+function singleAnswer(isCorrect, timeSpent) {
+  this.isCorrect = isCorrect;
+  this.timeSpent = timeSpent;
+}
+
+const mainAnswer = gameArtist.querySelectorAll(`.main-answer`);
 
 playAgainButton(gameArtist);
 
-mainAnswer.forEach( function (it) {
+const AudioName = '';
+
+let timePerAnswer = 0;
+
+setInterval(function() {
+  timePerAnswer += 1;
+}, 1000)
+
+let answerNumber = 0;
+
+mainAnswer.forEach(function (it) {
   it.addEventListener(`click`, () => {
-  changeScreen(gameGenre);
-})});
+    let isCorrect;
+    let timeSpent = (answerNumber == 0) ? gameTimer : timePerAnswer;
+    timePerAnswer = 0;
+    answerNumber += 1;
+
+    if (AudioName == mainAnswer.value) {
+      isCorrect = true;
+    } else {
+      isCorrect = false;
+    }
+
+    let newAnser = new singleAnswer(isCorrect, timeSpent);
+    userAnswers.push(newAnser);
+    console.log(userAnswers)
+    // changeScreen(gameGenre);
+  });
+});
 
 export {gameArtist};

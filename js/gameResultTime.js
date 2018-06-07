@@ -13,4 +13,3 @@ resultLossTime.innerHTML = `<section class="logo" title="Угадай мелод
 replayButton(resultLossTime);
 
 export {resultLossTime};
-    
