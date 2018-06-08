@@ -1,7 +1,8 @@
-// Экран приветствия 
+// Экран приветствия
 
 import {gameArtist} from './gameArtist';
-import {changeScreen} from './utils'
+import {changeScreen} from './utils';
+import {resultLossTime} from './gameResultTime';
 
 const mainWelcome = document.createElement(`section`);
 mainWelcome.className = `main main--welcome`;
@@ -16,9 +17,39 @@ mainWelcome.innerHTML = `
     </p>
   `;
 
-const buttonPlay = mainWelcome.querySelector('.main-play'); 
+let gameTimer = 0;
+
+const timer = (screen, xMin, xSec) => {
+
+  const timerSec = screen.querySelector(`.timer-value-secs`);
+  const timerMin = screen.querySelector(`.timer-value-mins`);
+    
+  timerSec.innerHTML = xSec;
+  timerMin.innerHTML = xMin;
+
+  const timerCountdown = setInterval(function() {
+
+    if (timerMin.innerHTML == 0 && timerSec.innerHTML == 0) {
+      changeScreen(resultLossTime);
+      clearInterval(timerCountdown);
+    }
+
+    else if (timerSec.innerHTML == 0 && timerMin.innerHTML > 0) {
+      timerSec.innerHTML = 60;
+      timerMin.innerHTML -= 1;
+    }
+
+    timerSec.innerHTML -= 1;
+    gameTimer += 1;
+  }, 1000); 
+}
+
+const buttonPlay = mainWelcome.querySelector(`.main-play`);
 buttonPlay.addEventListener(`click`, () => {
   changeScreen(gameArtist);
+  timer(gameArtist, 5, 0);
 });
 
-export {mainWelcome};
+
+
+export {mainWelcome, gameTimer};

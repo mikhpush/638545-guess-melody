@@ -10,4 +10,3 @@ resultLossAttepts.innerHTML = `<section class="logo" title="Угадай мел�
   `;
 
 export {resultLossAttepts};
-    
