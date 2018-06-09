@@ -11,8 +11,6 @@ const rename = require(`gulp-rename`);
 const imagemin = require(`gulp-imagemin`);
 const rollup = require(`gulp-better-rollup`);
 const sourcemaps = require(`gulp-sourcemaps`);
-const mocha = require(`gulp-mocha`); // Добавим установленный gulp-mocha плагин
-const commonjs = require(`rollup-plugin-commonjs`); // Добавим плагин для работы с `commonjs` модулями
 const mocha = require(`gulp-mocha`);                
 const commonjs = require(`rollup-plugin-commonjs`); 
 
@@ -23,7 +21,7 @@ gulp.task(`test`, function () {
     plugins: [
       commonjs()           // Сообщает Rollup, что модули можно загружать из node_modules
     ]}, `cjs`))            // Выходной формат тестов — `CommonJS` модуль
-  .pipe(gulp.dest(`build/test`))
+  .pipe(gulp.dest(`build/data`))
   .pipe(mocha({
     reporter: `spec`       // Вид в котором я хочу отображать результаты тестирования
   }));
