@@ -1,14 +1,9 @@
+import {getElementFromTemplate, renderScreen, playAgain} from '../utils';
+import genreScreen from './genre';
+import welcomeScreen from './welcome';
 
-// Игра на выбор исполнителя
-
-import {changeScreen, playAgainButton} from './utils';
-import {gameGenre} from './gameGenre';
-import {gameTimer} from './mainWelcome';
-
-
-const gameArtist = document.createElement(`section`);
-gameArtist.className = `main main--level main--level-artist`;
-gameArtist.innerHTML = `<a class="play-again play-again__wrap" href="#">
+const artistScreen = getElementFromTemplate(`<div class="main main--level main--level-artist">
+    <a class="play-again play-again__wrap" href="#">
       <img class="play-again__img" src="/img/melody-logo-ginger.png" alt="logo" width="177" height="76">
     </a>
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
@@ -67,48 +62,17 @@ gameArtist.innerHTML = `<a class="play-again play-again__wrap" href="#">
           </label>
         </div>
       </form>
-    </div>`;
+    </div>
+</div>`);
 
-
-let userAnswers = [];
-
-function singleAnswer(isCorrect, timeSpent) {
-  this.isCorrect = isCorrect;
-  this.timeSpent = timeSpent;
-}
-
-const mainAnswer = gameArtist.querySelectorAll(`.main-answer`);
-
-playAgainButton(gameArtist);
-
-const AudioName = '';
-
-let timePerAnswer = 0;
-
-setInterval(function() {
-  timePerAnswer += 1;
-}, 1000)
-
-let answerNumber = 0;
-
-mainAnswer.forEach(function (it) {
-  it.addEventListener(`click`, () => {
-    let isCorrect;
-    let timeSpent = (answerNumber == 0) ? gameTimer : timePerAnswer;
-    timePerAnswer = 0;
-    answerNumber += 1;
-
-    if (AudioName == mainAnswer.value) {
-      isCorrect = true;
-    } else {
-      isCorrect = false;
-    }
-
-    let newAnser = new singleAnswer(isCorrect, timeSpent);
-    userAnswers.push(newAnser);
-    console.log(userAnswers)
-    // changeScreen(gameGenre);
-  });
+artistScreen.querySelector(`.play-again`).addEventListener(`click`, () => {
+	renderScreen(welcomeScreen);
 });
 
-export {gameArtist};
+[...artistScreen.querySelectorAll(`.main-answer`)].map((answerButton) => {
+	answerButton.addEventListener(`click`, () => {
+		renderScreen(genreScreen);
+	});
+});
+
+export default artistScreen;

@@ -1,13 +1,10 @@
-// Игра на выбор жанра
-import {changeScreen, playAgainButton} from './utils';
-import {resultWin} from './gameResultWin';
-import {resultLossTime} from './gameResultTime';
-import {resultLossAttepts} from './gameResultAttempts';
+import {getElementFromTemplate, renderScreen} from '../utils.js';
+import winScreen from './win';
+import timeScreen from './time';
+import attemptsScreen from './attempts';
 
-const gameGenre = document.createElement(`section`);
-gameGenre.className = `main main--level main--level-genre`;
-gameGenre.innerHTML = `
-    <a class="play-again play-again__wrap" href="#">
+const genreScreen = getElementFromTemplate(`<div class="main main--level main--level-genre">
+	<a class="play-again play-again__wrap" href="#">
       <img class="play-again__img" src="/img/melody-logo-ginger.png" alt="logo" width="177" height="76">
     </a>
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
@@ -90,32 +87,11 @@ gameGenre.innerHTML = `
         <button class="genre-answer-send" type="submit">Ответить</button>
       </form>
     </div>
-    `;
+</div>`);
 
-const genreAnswer = gameGenre.querySelector(`.genre-answer-send`);
-
-playAgainButton(gameGenre);
-
-genreAnswer.addEventListener(`click`, () => {
-  let randomResult = Math.floor(Math.random() * 3);
-  switch (randomResult) {
-    case 0:
-      randomResult = resultWin;
-      break;
-    case 1:
-      randomResult = resultLossTime;
-      break;
-    case 2:
-    // randomResult = resultLossAttepts;
-      break;
-  }
-
-  changeScreen(randomResult);
-
-});
-
-const checkboxes = gameGenre.querySelectorAll(`.genre-answer input[type="checkbox"]`);
-const submit = gameGenre.querySelector(`.genre-answer-send`);
+const checkboxes = genreScreen.querySelectorAll(`.genre-answer input[type="checkbox"]`);
+const submit = genreScreen.querySelector(`.genre-answer-send`);
+const genreAnswer = genreScreen.querySelector(`.genre-answer-send`);
 
 submit.disabled = true;
 
@@ -125,5 +101,10 @@ checkboxes.forEach(function (it) {
   });
 });
 
+genreAnswer.addEventListener(`click`, (evt) => {
+	evt.preventDefault();
+	const screens = [winScreen, timeScreen, attemptsScreen];
+	renderScreen(screens[Math.floor(Math.random() * screens.length)]);
+});
 
-export {gameGenre};
+export default genreScreen;
