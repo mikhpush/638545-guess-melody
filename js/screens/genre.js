@@ -2,6 +2,8 @@ import {getElementFromTemplate, renderScreen} from '../utils.js';
 import winScreen from './win';
 import timeScreen from './time';
 import attemptsScreen from './attempts';
+import welcomeScreen from './welcome';
+
 
 const genreScreen = getElementFromTemplate(`<div class="main main--level main--level-genre">
 	<a class="play-again play-again__wrap" href="#">
@@ -105,6 +107,10 @@ genreAnswer.addEventListener(`click`, (evt) => {
 	evt.preventDefault();
 	const screens = [winScreen, timeScreen, attemptsScreen];
 	renderScreen(screens[Math.floor(Math.random() * screens.length)]);
+});
+
+genreScreen.querySelector(`.play-again`).addEventListener(`click`, () => {
+  renderScreen(welcomeScreen);
 });
 
 export default genreScreen;

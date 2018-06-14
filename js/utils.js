@@ -1,3 +1,33 @@
+export let initialState = {
+  FIRSTTRACK : 0,
+  AMOUNTOFGAMES : 10,
+  noteLivesMissed : 0,
+  NOTELIVES : 3,
+  GAMETIME : 120,
+  CIRCLELENGTH : 2325,
+  CIRCLECUT : 0
+
+};
+
+
+let userAnswers = [];
+
+export const circle = (p) => {
+    document.querySelector(`.timer-line`).style.strokeDashoffset = p;
+  }
+
+function singleAnswer(isCorrect, TIMESPENT) {
+  this.isCorrect = isCorrect;
+  this.timeSpent = TIMESPENT;
+}
+
+export const addUserAnswer = (isCorrect, TIMESPENT) => {
+  let newAnser = new singleAnswer(isCorrect, TIMESPENT);
+  userAnswers.push(newAnser);
+  console.log(userAnswers);
+
+}
+
 export const getElementFromTemplate = (stringTemplate) => {
 	let result = document.createElement('div');
 	Object.assign(result.style,{width: '100%', height:'100%'});
@@ -10,6 +40,11 @@ export const renderScreen = (screen) => {
 	mainScreen.innerHTML = ``;
 	mainScreen.appendChild(screen);
 };
+
+export const renderWrap = (wrapper) => {
+  const mainScreen = document.querySelector(`.main--level`);
+  mainScreen.insertAdjacentElement(`afterbegin`, wrapper);
+}
 
 const isNumeric = (n) => !isNaN(parseFloat(n)) && isFinite(n);
 
@@ -28,20 +63,39 @@ export const setTimer = (time) => {
 
   const timer = { 
     timeLeft: time, 
-    isFinished: () => timer.timeLeft === 0, 
+    isFinished: false,
     tick: () => { 
       if (timer.timeLeft > 0) { 
         timer.timeLeft -= 1; // *sec 
-      } 
+      } else {
+        timer.isFinished = true;
+      }
     } 
   };
 
   return timer; 
 };
 
-export const userScoreCounter = (answersArray) => {
+export const startGame = (time, timeStopEvent) => {
+  const gameTime = setTimer(time);
   
-  const NUMBER_ANSWERS = 10;
+  const countdown = setInterval(function() { 
+    gameTime.tick();
+    if (gameTime.isFinished == true) {
+      renderScreen(timeStopEvent);
+    }
+    
+    console.log(gameTime.timeLeft);
+    
+    }, 1000);
+  
+  setTimeout(function() {
+    clearInterval(countdown) }, (time+1)*1000);
+}
+
+export const userScoreCounter = () => {
+
+
   const FAST_TIME_ANSWER = 30;
 
   const answerPoints = { 
@@ -52,23 +106,23 @@ export const userScoreCounter = (answersArray) => {
   
   let userScore = 0;
 
-  if (answersArray.length < NUMBER_ANSWERS) {
+  if (userAnswers.length < initialState.AMOUNTOFGAMES) {
     return userScore = -1;
   };
 
-  answersArray.forEach(function(it) {
+  userAnswers.forEach(function(it) {
     if (it.isCorrect == true && it.timeSpent < FAST_TIME_ANSWER) {
       userScore += answerPoints.FAST;
     } else if (it.isCorrect == true && it.timeSpent >= FAST_TIME_ANSWER) {
       userScore += answerPoints.CORRECT;
     } else if (it.isCorrect == false) {
-      userScore -= answerPoints.INCORRECT;
+      userScore += answerPoints.INCORRECT;
     }
   });
 
   return userScore;
 }
-
+/*
 export const userResultsDisplay = (lastGamesResults, userResultsScope) => {
   
   if (userResultsScope.gameTimeLeft == 0) {
@@ -101,7 +155,7 @@ export const userResultsDisplay = (lastGamesResults, userResultsScope) => {
   return `Вы заняли ${userPositionIndex + 1} место из ${allGamesResults.length} игроков. 
   Это лучше, чем у ${userComparison()}% игроков`;
 }
-
+*/
 
 
 
