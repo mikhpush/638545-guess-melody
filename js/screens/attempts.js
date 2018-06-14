@@ -1,4 +1,4 @@
-import {getElementFromTemplate, renderScreen} from '../utils.js';
+import {getElementFromTemplate, renderScreen, initialState} from '../utils.js';
 import welcomeScreen from './welcome';
 
 const attemptsScreen = getElementFromTemplate(`<div class="main main--result">
@@ -10,6 +10,8 @@ const attemptsScreen = getElementFromTemplate(`<div class="main main--result">
 </div>`);
 
 attemptsScreen.querySelector(`.main-replay`).addEventListener(`click`, () => {
+	initialState.noteLivesMissed = 0;
+	initialState.FIRSTTRACK = 0;
 	renderScreen(welcomeScreen);
 });
 

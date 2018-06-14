@@ -1,5 +1,10 @@
-import {getElementFromTemplate, renderScreen} from '../utils.js';
+import {getElementFromTemplate, renderScreen, renderWrap, initialState, startGame, circle} from '../utils.js';
+import artistScreenWrap from './artistScreenWrap';
 import artistScreen from './artist';
+import {globalSound} from './artist';
+import musicCollection from '../music/music.js';
+import answersArtist from '../answers/answersArtist.js';
+import timeScreen from './time';
 
 const welcomeScreen = getElementFromTemplate(`
 	<section class="main main--welcome">
@@ -15,7 +20,20 @@ const welcomeScreen = getElementFromTemplate(`
 `);
 
 welcomeScreen.querySelector(`.main-play`).addEventListener(`click`, () => {
-	renderScreen(artistScreen);
+  renderScreen(artistScreen(musicCollection[initialState.FIRSTTRACK], answersArtist(initialState.FIRSTTRACK)));
+  console.log(initialState.noteLivesMissed)
+  renderWrap(artistScreenWrap(initialState.noteLivesMissed, globalSound));
+
+  setInterval(function slicer() {
+
+    circle(initialState.CIRCLECUT);
+
+    initialState.CIRCLECUT += (2325/(initialState.GAMETIME*20));
+    console.log(`я отрендерилась ${initialState.CIRCLECUT}`);
+  }, 50);
+
+ // startGame(120, timeScreen);
+
 });
 
 export default welcomeScreen;
