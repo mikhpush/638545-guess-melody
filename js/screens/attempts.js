@@ -1,5 +1,6 @@
 import {getElementFromTemplate, renderScreen, initialState} from '../utils.js';
 import welcomeScreen from './welcome';
+
 import {AbstractView} from './abstract-view';
 
 export class attemptsScreen extends AbstractView {

@@ -39,5 +39,4 @@ export class welcomeScreen extends AbstractView {
   }
 }
 
-export default welcomeScreen;
 
