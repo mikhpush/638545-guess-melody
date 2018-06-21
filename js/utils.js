@@ -1,25 +1,218 @@
+export let initialState = {
+  FIRSTTRACK : 0,
+  AMOUNTOFGAMES : 10,
+  noteLivesMissed : 0,
+  NOTELIVES : 3,
+  GAMETIME : 120,
+  CIRCLELENGTH : 2325,
+  CIRCLECUT : 0
+
+};
+
+
+let userAnswers = [];
+
+export const circle = (p) => {
+    document.querySelector(`.timer-line`).style.strokeDashoffset = p;
+  }
+
+function singleAnswer(isCorrect, TIMESPENT) {
+  this.isCorrect = isCorrect;
+  this.timeSpent = TIMESPENT;
+}
+
+export const addUserAnswer = (isCorrect, TIMESPENT) => {
+  let newAnser = new singleAnswer(isCorrect, TIMESPENT);
+  userAnswers.push(newAnser);
+  console.log(userAnswers);
+
+}
+
+export const getElementFromTemplate = (stringTemplate) => {
+	let result = document.createElement('div');
+	Object.assign(result.style,{width: '100%', height:'100%'});
+	result.innerHTML = stringTemplate;
+	return result;
+};
+
+export const renderScreen = (screen) => {
+	const mainScreen = document.querySelector(`.main`);	
+	mainScreen.innerHTML = ``;
+	mainScreen.appendChild(screen);
+};
+
+export const renderWrap = (wrapper) => {
+  const mainScreen = document.querySelector(`.main--level`);
+  mainScreen.insertAdjacentElement(`afterbegin`, wrapper);
+}
+
+const isNumeric = (n) => !isNaN(parseFloat(n)) && isFinite(n);
+
+export const setTimer = (time) => { 
+	if (!isNumeric(time)) { 
+		throw new Error(`passed argument is not a number`); 
+	}
+
+	if (time < 0) {
+    throw new Error(`cannot set negative value`);
+  }
+
+  if (!Number.isInteger(time)) {
+  	throw new Error(`боюсь, мы принимаем только целые секунды к расчету`)
+  }
+
+  const timer = { 
+    timeLeft: time, 
+    isFinished: false,
+    tick: () => { 
+      if (timer.timeLeft > 0) { 
+        timer.timeLeft -= 1; // *sec 
+      } else {
+        timer.isFinished = true;
+      }
+    } 
+  };
+
+  return timer; 
+};
+
+export const startGame = (time, timeStopEvent) => {
+  const gameTime = setTimer(time);
+  
+  const countdown = setInterval(function() { 
+    gameTime.tick();
+    if (gameTime.isFinished == true) {
+      renderScreen(timeStopEvent);
+    }
+    
+    console.log(gameTime.timeLeft);
+    
+    }, 1000);
+  
+  setTimeout(function() {
+    clearInterval(countdown) }, (time+1)*1000);
+}
+
+export const userScoreCounter = () => {
+
+
+  const FAST_TIME_ANSWER = 30;
+
+  const answerPoints = { 
+    CORRECT: 1, 
+    FAST: 2, 
+    INCORRECT: -2 
+  };
+  
+  let userScore = 0;
+
+  if (userAnswers.length < initialState.AMOUNTOFGAMES) {
+    return userScore = -1;
+  };
+
+  userAnswers.forEach(function(it) {
+    if (it.isCorrect == true && it.timeSpent < FAST_TIME_ANSWER) {
+      userScore += answerPoints.FAST;
+    } else if (it.isCorrect == true && it.timeSpent >= FAST_TIME_ANSWER) {
+      userScore += answerPoints.CORRECT;
+    } else if (it.isCorrect == false) {
+      userScore += answerPoints.INCORRECT;
+    }
+  });
+
+  return userScore;
+}
+/*
+export const userResultsDisplay = (lastGamesResults, userResultsScope) => {
+  
+  if (userResultsScope.gameTimeLeft == 0) {
+    return `Время вышло! Вы не успели отгадать все мелодии`
+  };
+
+  if (userResultsScope.noteLives == 0) {
+    return `У вас закончились все попытки. Ничего, повезёт в следующий раз!`
+  };
+
+  lastGamesResults.push(userResultsScope);
+  const allGamesResults = lastGamesResults;
+
+  const statistics = allGamesResults.map(function(it) {
+    return it.userScore;
+  });
+
+  statistics.sort(function(a, b) {
+    return b - a;
+  });
+
+  const userPositionIndex = statistics.findIndex(function(it) {
+    return it == userResultsScope.userScore;
+  });
+
+  const userComparison = () => { 
+   return Math.round((allGamesResults.length - userPositionIndex -1) / allGamesResults.length * 100);
+  };
+
+  return `Вы заняли ${userPositionIndex + 1} место из ${allGamesResults.length} игроков. 
+  Это лучше, чем у ${userComparison()}% игроков`;
+}
+*/
+
+
+
+
+
+
+
+
+
+
 // Набор общих функций
 
-import {mainWelcome} from './mainWelcome';
+/*import {mainWelcome} from './mainWelcome';
 
 
-const mainElement = document.querySelector(`.main`);
-
-const changeScreen = (x) => {
+export const changeScreen = (x) => {
+  const mainElement = document.querySelector(`.main`);
   mainElement.innerHTML = ``;
   mainElement.appendChild(x);
 };
 
-const playAgainButton = (y) => {
+export const playAgainButton = (y) => {
   y.querySelector(`.play-again`).addEventListener(`click`, () => {
     changeScreen(mainWelcome);
   });
 };
 
-const replayButton = (z) => {
+export const replayButton = (z) => {
   z.querySelector(`.main-replay`).addEventListener(`click`, () => {
     changeScreen(mainWelcome);
   });
 };
 
-export {changeScreen, playAgainButton, replayButton};
+const isNumeric = (n) => !isNaN(parseFloat(n)) && isFinite(n);
+
+export const setTimer = (time) => { 
+	if (!isNumeric(time)) { 
+		throw new Error(`passed argument is not a number`); 
+	}
+
+	if (time < 0) {
+    throw new Error(`cannot set negative value`);
+  }
+
+  if (!Number.isInteger(time)) {
+  	throw new Error(`боюсь, мы принимаем только целые секунды к расчету`)
+  }
+
+  const timer = { 
+    timeLeft: time, 
+    isFinished: () => timer.timeLeft === 0, 
+    tick: () => { 
+      if (timer.timeLeft > 0) { 
+        timer.timeLeft -= 1; // *sec 
+      } 
+    } 
+  };
+
+  return timer; 
+};*/
