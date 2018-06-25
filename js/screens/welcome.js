@@ -1,13 +1,16 @@
 import {getElementFromTemplate, renderScreen, renderWrap, initialState, startGame, circle} from '../utils.js';
-import artistScreenWrap from './artistScreenWrap';
-import artistScreen from './artist';
-import {globalSound} from './artist';
+import {LevelWrapView} from './levelWrap-view';
+import {globalSound} from './level-view';
 import musicCollection from '../music/music.js';
 import answersArtist from '../answers/answersArtist.js';
 import timeScreen from './time';
+import {LevelView} from './level-view';
+import {AbstractView} from './abstract-view';
 
-const welcomeScreen = getElementFromTemplate(`
-	<section class="main main--welcome">
+export class welcomeScreen extends AbstractView {
+
+  render() {
+    return `<section class="main main--welcome">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
     <button class="main-play">Начать игру</button>
     <h2 class="title main-title">Правила игры</h2>
@@ -16,25 +19,24 @@ const welcomeScreen = getElementFromTemplate(`
       Ошибиться можно 3 раза.<br>
       Удачи!
     </p>
-  </section>
-`);
+  </section>`
+  }
 
-welcomeScreen.querySelector(`.main-play`).addEventListener(`click`, () => {
-  renderScreen(artistScreen(musicCollection[initialState.FIRSTTRACK], answersArtist(initialState.FIRSTTRACK)));
-  console.log(initialState.noteLivesMissed)
-  renderWrap(artistScreenWrap(initialState.noteLivesMissed, globalSound));
+  onAnswer() {
+    renderScreen(new LevelView(musicCollection[initialState.FIRSTTRACK], answersArtist(initialState.FIRSTTRACK)).element);
+    renderWrap(new LevelWrapView(initialState.noteLivesMissed, globalSound).element);
+    setInterval(function slicer() {
+      circle(initialState.CIRCLECUT);
+      initialState.CIRCLECUT += (initialState.CIRCLELENGTH/(initialState.GAMETIME*20));
+    }, 50);
+    // startGame(120, timeScreen);
+  }
 
-  setInterval(function slicer() {
+  bind() {
+    this.element.querySelector(`.main-play`).addEventListener(`click`, () => {
+      this.onAnswer();
+    });
+  }
+}
 
-    circle(initialState.CIRCLECUT);
-
-    initialState.CIRCLECUT += (2325/(initialState.GAMETIME*20));
-    console.log(`я отрендерилась ${initialState.CIRCLECUT}`);
-  }, 50);
-
- // startGame(120, timeScreen);
-
-});
-
-export default welcomeScreen;
 
