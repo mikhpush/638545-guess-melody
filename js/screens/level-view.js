@@ -1,4 +1,4 @@
-import {renderScreen, addUserAnswer, renderWrap, initialState, userScoreCounter} from '../utils';
+import {renderScreen, addUserAnswer, renderWrap, gameState, userScoreCounter} from '../utils';
 //import genreScreen from './genre';
 import musicCollection from '../music/music.js';
 import answersArtist from '../answers/answersArtist.js';
@@ -15,7 +15,7 @@ export class LevelView extends AbstractView {
 		super();
 		this.track = track;
 		this.answer = answer;
-		this.soundTrack = new Audio(track.src);
+		
   	globalSound = this.soundTrack;
 	}
 
@@ -67,8 +67,6 @@ export class LevelView extends AbstractView {
 	}
 
 	get element() {
-		this.soundTrack.play()
-
 		if (this._element) {
 			return this._element
 		}
@@ -77,68 +75,11 @@ export class LevelView extends AbstractView {
 		Object.assign(this._element.style,{width: '100%', height:'100%'});
 		this._element.innerHTML = this.render();
 		this.bind();
-		console.log(this.track.name);
 		return this._element;
 
 	} 
 
 	onAnswer(it) {
-	  this.soundTrack.pause();
-    
-    let isCorrect;
-    let TIMESPENT = 20;
-
-    if (this.track.name == it.value) {
-      isCorrect = true;
-    } else {
-      isCorrect = false;
-      initialState.noteLivesMissed += 1;
-      console.log(`Итого у вас ошибкок ${initialState.noteLivesMissed}`);
-    }
-
-    addUserAnswer(isCorrect, TIMESPENT);
-
-    if (initialState.FIRSTTRACK == (initialState.AMOUNTOFGAMES - 1)) {
-      const finalScore = userScoreCounter();
-
-      const userResultsScope = {
-        gameTimeLeft : 20,
-        noteLives : (initialState.NOTELIVES - initialState.noteLivesMissed),
-        userScore : finalScore
-      };
-
-      lastGamesResults.push(userResultsScope);
-		  const allGamesResults = lastGamesResults;
-
-		  const statistics = allGamesResults.map(function(it) {
-		    return it.userScore;
-		  });
-
-		  statistics.sort(function(a, b) {
-		    return b - a;
-		  });
-
-		  const userPositionIndex = statistics.findIndex(function(it) {
-		    return it == userResultsScope.userScore;
-		  });
-
-		  const userComparison = () => { 
-		   return Math.round((allGamesResults.length - userPositionIndex - 1) / allGamesResults.length * 100);
-		  };
-
-		  userComparison();
-      renderScreen(new winScreen(allGamesResults, userResultsScope, userPositionIndex, userComparison).element);
-      return;
-    }
-
-    if (initialState.noteLivesMissed == initialState.NOTELIVES) {
-      renderScreen(new attemptsScreen().element);
-      return;
-    }
-
-    initialState.FIRSTTRACK += 1;
-    renderScreen(new LevelView(musicCollection[initialState.FIRSTTRACK], answersArtist(initialState.FIRSTTRACK)).element);
- 		renderWrap(new LevelWrapView(initialState.noteLivesMissed, globalSound).element);
 	};
 
 	bind() {

@@ -1,11 +1,12 @@
-import {getElementFromTemplate, renderScreen, playAgain, initialState} from '../utils';
-import {welcomeScreen} from './welcome';
+import {getElementFromTemplate, renderScreen, playAgain} from '../utils';
+import {WelcomeScreen} from './welcome';
 import {AbstractView} from './abstract-view';
 
 
 export class LevelWrapView extends AbstractView {
-  constructor(noteLives, sound) {
+  constructor(noteLives, sound, gameState) {
     super();
+    this.gameState = gameState;
     this.noteLives = noteLives;
     this.sound = sound;
   }
@@ -15,15 +16,15 @@ export class LevelWrapView extends AbstractView {
         <img class="play-again__img" src="/img/melody-logo-ginger.png" alt="logo" width="177" height="76">
       </a>
       <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
-        <circle stroke-dasharray="2325" 
+        <circle stroke-dasharray="2325" stroke-dashoffset="${this.gameState.circleCut}" 
           cx="390" cy="390" r="370"
           class="timer-line"
           style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
         <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-          <span class="timer-value-mins">01</span><!--
+          <span class="timer-value-mins">${this.gameState.GAMETIMEMIN}</span><!--
           --><span class="timer-value-dots">:</span><!--
-          --><span class="timer-value-secs">03</span>
+          --><span class="timer-value-secs">${((this.gameState.GAMETIMESEC != 0) ? this.gameState.GAMETIMESEC : (`0${this.gameState.GAMETIMESEC}`))}</span>
         </div>
       </svg>
 <div class="main-mistakes">
@@ -55,7 +56,7 @@ export class LevelWrapView extends AbstractView {
 
   onAnswer() {
     this.sound.pause();
-    renderScreen(new welcomeScreen().element);
+    super.onAnswer();
   }
 
   bind() {

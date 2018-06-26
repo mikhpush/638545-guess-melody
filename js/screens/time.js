@@ -1,9 +1,8 @@
 import {getElementFromTemplate, renderScreen} from '../utils.js';
-import welcomeScreen from './welcome';
-
+import {WelcomeScreen} from './welcome';
 import {AbstractView} from './abstract-view';
 
-export class timeScreen extends AbstractView {
+export class TimeScreen extends AbstractView {
 
 	render() {
 		return `<div class="main main--result">
@@ -15,4 +14,3 @@ export class timeScreen extends AbstractView {
 	};
 
 };
-

@@ -1,8 +1,7 @@
-
-import {welcomeScreen} from './screens/welcome';
+import {Application} from './screens/application';
 import {renderScreen} from './utils';
 
-renderScreen(new welcomeScreen().element);
+Application.showWelcome();
 
 
 

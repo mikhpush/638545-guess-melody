@@ -1,5 +1,5 @@
 import musicCollection from '../music/music.js';
-import {initialState} from '../utils';
+import {gameState} from '../utils';
 
 const answersArtist = (n) => {
 
@@ -9,15 +9,12 @@ let array1 = [n];
 
   const randomAnswer = (n) => {
 
-    let getRandom = Math.round(Math.random()*(initialState.AMOUNTOFGAMES - 1));
-    console.log(`getrandom = ${getRandom}`);
+    let getRandom = Math.round(Math.random()*(gameState.AMOUNTOFGAMES - 1));
 
     if (getRandom !== n && getRandom !== firstAnswer) {
           
       let random = getRandom;
-      console.log(`random присвоен ${random}`);
       firstAnswer = getRandom;
-      console.log(`firstAnswer присвоен ${firstAnswer}`);
       return array1.push(random);
       
     } else {
@@ -33,7 +30,6 @@ array1.sort(function(a, b) {
     return (Math.random() - Math.random());
   });
 
-console.log(array1);
 
   return ({
       val1: musicCollection[array1[0]].name,

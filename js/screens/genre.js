@@ -2,7 +2,7 @@ import {getElementFromTemplate, renderScreen} from '../utils.js';
 import winScreen from './win';
 import timeScreen from './time';
 import attemptsScreen from './attempts';
-import welcomeScreen from './welcome';
+import {WelcomeScreen} from './welcome';
 
 
 const genreScreen = getElementFromTemplate(`<div class="main main--level main--level-genre">
@@ -110,7 +110,7 @@ genreAnswer.addEventListener(`click`, (evt) => {
 });
 
 genreScreen.querySelector(`.play-again`).addEventListener(`click`, () => {
-  renderScreen(welcomeScreen);
+  renderScreen(WelcomeScreen);
 });
 
 export default genreScreen;

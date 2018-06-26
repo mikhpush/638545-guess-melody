@@ -1,9 +1,8 @@
-import {getElementFromTemplate, renderScreen, initialState} from '../utils.js';
-import welcomeScreen from './welcome';
-
+import {getElementFromTemplate, renderScreen, gameState} from '../utils.js';
+import {WelcomeScreen} from './welcome';
 import {AbstractView} from './abstract-view';
 
-export class attemptsScreen extends AbstractView {
+export class AttemptsScreen extends AbstractView {
 
 	render() {
 		return `<div class="main main--result">
@@ -14,4 +13,5 @@ export class attemptsScreen extends AbstractView {
 	    <span role="button" tabindex="0" class="main-replay">Попробовать ещё раз</span>
 			</div>`
 	}
+
 }
