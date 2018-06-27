@@ -1,6 +1,6 @@
-import {renderScreen, initialState} from '../utils';
+import {renderScreen, gameState} from '../utils';
 
-import {welcomeScreen} from './welcome';
+import {WelcomeScreen} from './welcome';
 
 
 export class AbstractView {
@@ -21,7 +21,7 @@ export class AbstractView {
 		this._element = document.createElement(`div`);
 		Object.assign(this._element.style,{width: '100%', height:'100%'});
 		this._element.innerHTML = this.render();
-		this.bind();
+    this.bind();
 		return this._element;
   }
 
@@ -29,16 +29,8 @@ export class AbstractView {
     return render(this.template);
   }
 
-  onAnswer() {
-    initialState.noteLivesMissed = 0;
-    initialState.FIRSTTRACK = 0;
-    renderScreen(new welcomeScreen().element);
-  }
-
   bind() {
-    this.element.querySelector(`.main-replay`).addEventListener(`click`, () => {
-      this.onAnswer();
-    });
+    
   }
 
 };

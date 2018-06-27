@@ -1,20 +1,61 @@
-export let initialState = {
+
+export let initialGameState = {
   FIRSTTRACK : 0,
   AMOUNTOFGAMES : 10,
   noteLivesMissed : 0,
   NOTELIVES : 3,
-  GAMETIME : 120,
+  GAMETIMEMIN : 5,
+  GAMETIMESEC : 0,
+  timeSpentSec : 0,
+  perAnswerCounter : 0,
   CIRCLELENGTH : 2325,
-  CIRCLECUT : 0
-
+  circleCut : 0,
+  FAST_TIME_ANSWER : 30
 };
 
+export let gameState = Object.assign({}, initialGameState);
 
 let userAnswers = [];
 
-export const circle = (p) => {
-    document.querySelector(`.timer-line`).style.strokeDashoffset = p;
-  }
+let circleTimer;
+
+export const startCircleTimer = (arg) => {
+  const circleCutShift = (arg.CIRCLELENGTH/((arg.GAMETIMEMIN*60 + arg.GAMETIMESEC)*20));
+  circleTimer = setInterval(() => {
+    document.querySelector(`.timer-line`).style.strokeDashoffset = arg.circleCut;
+    arg.circleCut += circleCutShift;
+    if (arg.circleCut == arg.CIRCLELENGTH) {
+      clearInterval(circleTimer);
+    }
+  }, 50);
+}
+
+export const stopCircleTimer = () => {clearInterval(circleTimer)};
+
+let timer;
+
+export const startTimer = (arg) => {
+  timer = setInterval(() => {
+    if (arg.GAMETIMEMIN == 0 && arg.GAMETIMESEC == 0) {
+      return clearInterval(timer);
+    } else if (arg.GAMETIMEMIN >= 0 && arg.GAMETIMESEC == 0) {
+      arg.GAMETIMESEC = 59;
+      if (arg.GAMETIMEMIN > 0) {
+        arg.GAMETIMEMIN -= 1;
+      }
+    };
+    arg.perAnswerCounter += 1;
+    arg.timeSpentSec += 1;
+
+    let twoDigitSecDisplay = (arg.GAMETIMESEC < 10) ? `0${arg.GAMETIMESEC}` : arg.GAMETIMESEC; 
+
+    document.querySelector(`.timer-value-mins`).innerHTML = arg.GAMETIMEMIN;
+    document.querySelector(`.timer-value-secs`).innerHTML = twoDigitSecDisplay;
+    arg.GAMETIMESEC -= 1;
+  }, 1000);
+};
+
+export const stopTimer = () => {clearInterval(timer)};
 
 function singleAnswer(isCorrect, TIMESPENT) {
   this.isCorrect = isCorrect;
@@ -24,9 +65,17 @@ function singleAnswer(isCorrect, TIMESPENT) {
 export const addUserAnswer = (isCorrect, TIMESPENT) => {
   let newAnser = new singleAnswer(isCorrect, TIMESPENT);
   userAnswers.push(newAnser);
-  console.log(userAnswers);
-
 }
+
+export const fastAnswersAmount = () => {
+  let number = 0;
+  userAnswers.forEach((it) => {
+    if (it.timeSpent < initialGameState.FAST_TIME_ANSWER) {
+      number += 1;
+    }
+  });
+  return number;
+};
 
 export const getElementFromTemplate = (stringTemplate) => {
 	let result = document.createElement('div');
@@ -76,28 +125,7 @@ export const setTimer = (time) => {
   return timer; 
 };
 
-export const startGame = (time, timeStopEvent) => {
-  const gameTime = setTimer(time);
-  
-  const countdown = setInterval(function() { 
-    gameTime.tick();
-    if (gameTime.isFinished == true) {
-      renderScreen(timeStopEvent);
-    }
-    
-    console.log(gameTime.timeLeft);
-    
-    }, 1000);
-  
-  setTimeout(function() {
-    clearInterval(countdown) }, (time+1)*1000);
-}
-
-export const userScoreCounter = () => {
-
-
-  const FAST_TIME_ANSWER = 30;
-
+export const userScoreCounter = (arg) => {
   const answerPoints = { 
     CORRECT: 1, 
     FAST: 2, 
@@ -106,14 +134,14 @@ export const userScoreCounter = () => {
   
   let userScore = 0;
 
-  if (userAnswers.length < initialState.AMOUNTOFGAMES) {
+  if (userAnswers.length < arg.AMOUNTOFGAMES) {
     return userScore = -1;
   };
 
   userAnswers.forEach(function(it) {
-    if (it.isCorrect == true && it.timeSpent < FAST_TIME_ANSWER) {
+    if (it.isCorrect == true && it.timeSpent < initialGameState.FAST_TIME_ANSWER) {
       userScore += answerPoints.FAST;
-    } else if (it.isCorrect == true && it.timeSpent >= FAST_TIME_ANSWER) {
+    } else if (it.isCorrect == true && it.timeSpent >= initialGameState.FAST_TIME_ANSWER) {
       userScore += answerPoints.CORRECT;
     } else if (it.isCorrect == false) {
       userScore += answerPoints.INCORRECT;
