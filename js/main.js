@@ -1,7 +1,7 @@
 import {Application} from './screens/application';
 import {renderScreen} from './utils';
 
-Application.showWelcome();
+Application.showSplash();
 
 
 

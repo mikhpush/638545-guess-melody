@@ -4,11 +4,11 @@ import {AbstractView} from './abstract-view';
 
 
 export class LevelWrapView extends AbstractView {
-  constructor(noteLives, sound, gameState) {
+  constructor(noteLives, gameState) {
     super();
     this.gameState = gameState;
     this.noteLives = noteLives;
-    this.sound = sound;
+
   }
 
   render() {
@@ -55,7 +55,6 @@ export class LevelWrapView extends AbstractView {
   }
 
   onAnswer() {
-    this.sound.pause();
     super.onAnswer();
   }
 

@@ -1,4 +1,4 @@
-import {renderScreen, addUserAnswer, renderWrap, gameState, userScoreCounter} from '../utils';
+import {renderScreen, addUserAnswer, renderWrap, userScoreCounter} from '../utils';
 //import genreScreen from './genre';
 import musicCollection from '../music/music.js';
 import answersArtist from '../answers/answersArtist.js';
@@ -8,21 +8,17 @@ import {attemptsScreen} from './attempts';
 import {LevelWrapView} from './levelWrap-view';
 import {AbstractView} from './abstract-view';
 
-export let globalSound;
-
 export class LevelView extends AbstractView {
 	constructor(track, answer) {
 		super();
 		this.track = track;
 		this.answer = answer;
-		
-  	globalSound = this.soundTrack;
 	}
 
 	render() {
 		return `<div class="main main--level main--level-artist">
 		  <div class="main-wrap">
-		      <h2 class="title main-title">Какое это произведение?</h2>
+		      <h2 class="title main-title">${this.track.question}</h2>
 		      <div class="player-wrapper">
 		        <div class="player">
 		          <audio>
@@ -66,6 +62,7 @@ export class LevelView extends AbstractView {
 		  </div>`
 	}
 
+
 	get element() {
 		if (this._element) {
 			return this._element
@@ -83,17 +80,32 @@ export class LevelView extends AbstractView {
 	};
 
 	bind() {
+		let artistSoundGlobal = new Audio(this.track.src);
+
+		artistSoundGlobal.play();
+
 		const onAnswerHook = (it) => {this.onAnswer(it)};
 
-  	const playButton = this.element.querySelector('.player-control--pause');
-  	playButton.addEventListener(`click`, () => {
-    	this.soundTrack.pause();
+  	const playButton = this.element.querySelector(`.player-control`);
+  	playButton.addEventListener(`click`, (evt) => {
+    	if (playButton.className === `player-control player-control--play`) {
+          evt.preventDefault();
+          artistSoundGlobal.play();
+          playButton.className = `player-control player-control--pause`;
+        } else {
+          evt.preventDefault();
+          artistSoundGlobal.pause();
+          playButton.className = `player-control player-control--play`;
+        }
   	});
+
+  	
 
   	const answerButton = this.element.querySelectorAll(`.main-answer-r`);
   	
   	answerButton.forEach(function (it) {
 	    it.addEventListener(`click`, () => {
+	    	artistSoundGlobal.pause();
 	    	onAnswerHook(it);
 	    });
 	  });

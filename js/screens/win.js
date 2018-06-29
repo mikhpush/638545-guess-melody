@@ -1,6 +1,7 @@
-import {getElementFromTemplate, renderScreen, userResultsDisplay, gameState} from '../utils.js';
+import {getElementFromTemplate, renderScreen, userResultsDisplay} from '../utils.js';
 import {WelcomeScreen} from './welcome';
 import {AbstractView} from './abstract-view';
+import {Application} from './application';
 
 
 export class WinScreen extends AbstractView {
@@ -31,7 +32,7 @@ export class WinScreen extends AbstractView {
 	onAnswer() {
 		gameState.noteLivesMissed = 0;
 		gameState.FIRSTTRACK = 0;
-		renderScreen(new WelcomeScreen().element);
+		application.showWelcome();
 	}
 
 	bind() {

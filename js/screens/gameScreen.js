@@ -5,33 +5,44 @@ import {LevelView} from './level-view';
 import {LevelWrapView} from './levelWrap-view';
 import musicCollection from '../music/music.js';
 import answersArtist from '../answers/answersArtist.js';
-import {globalSound} from './level-view';
 import {AttemptsScreen} from './attempts';
 import {TimeScreen} from './time';
 import {Application} from './application';
 import lastGamesResults from '../answers/lastGamesResults.js';
+import {adaptedAnswersData, adaptedMusicCollection} from './data-adapter';
+import GenreView from './genre-view';
 
 export default class GameScreen {
 	constructor(model) {
 		this.model = model;
-		this.track = musicCollection[this.model.state.FIRSTTRACK];
-		this.answer = answersArtist(this.model.state.FIRSTTRACK);
-		this.content = new LevelView(this.track, this.answer);
-		this.content.onAnswer = this.onGameAnswer.bind(this);
-    this.wrapper = new LevelWrapView(this.model.state.noteLivesMissed, globalSound);
+		this.track = adaptedMusicCollection(this.model.state.FIRSTTRACK, this.model.gameData);
+		this.answer = adaptedAnswersData(this.model.state.FIRSTTRACK, this.model.gameData);
+
 	}
 
-	onGameAnswer(it) {
+	onGameAnswer(it, choosenAnswers) {
 		this.model.stopTick();
-		this.soundTrack.pause();
     
     let isCorrect;
 
-    if (this.track.name == it.value) {
-      isCorrect = true;
+    if (this.answer.type === "genre") {
+    	for (const choice of choosenAnswers) {
+      	if (choice.checked == true && choice.value != this.answer.genre) {
+      		isCorrect = false;
+      		this.model.attemptLoss();
+      		break;
+	    	} else if (choice.checked == true && choice.value == this.answer.genre) {
+	    		isCorrect = true;
+	    	};
+	    };
+
     } else {
-      isCorrect = false;
-      this.model.attemptLoss();
+    	if (this.track.name == it.value) {
+      	isCorrect = true;
+    	} else {
+      	isCorrect = false;
+      	this.model.attemptLoss();
+    	}
     }
 
     if (this.model.state.noteLivesMissed == this.model.state.NOTELIVES) {
@@ -79,29 +90,28 @@ export default class GameScreen {
 
 
     this.model.state.FIRSTTRACK += 1;
-    this.track = musicCollection[this.model.state.FIRSTTRACK];
-    this.answer = answersArtist(this.model.state.FIRSTTRACK);
+    this.track = adaptedMusicCollection(this.model.state.FIRSTTRACK, this.model.gameData);
+    this.answer = adaptedAnswersData(this.model.state.FIRSTTRACK, this.model.gameData);
     this.model.state.perAnswerCounter = 0;
  		this.startGame();
 	}
 
-	nextScreen() {
-
-	}
 
 	startGame() {
 		this.model.tick();
-		this.content = new LevelView(this.track, this.answer);
+		if (this.model.gameData[this.model.state.FIRSTTRACK].type === `artist`) {
+			this.content = new LevelView(this.track, this.answer);
+		} else {
+			this.content = new GenreView(this.track, this.answer);
+		}
 		this.content.onAnswer = this.onGameAnswer.bind(this);
-    this.soundTrack = new Audio(this.track.src);
-    this.soundTrack.play();
-    this.wrapper = new LevelWrapView(this.model.state.noteLivesMissed, globalSound, this.model.state);
+    
+    this.wrapper = new LevelWrapView(this.model.state.noteLivesMissed, this.model.state);
     this.wrapper.onAnswer = this.playAgain.bind(this);
     renderScreen(this.content.element);
     renderWrap(this.wrapper.element);
     const timeListener = setInterval(() =>{
     	if (this.model.state.GAMETIMESEC == 0 && this.model.state.GAMETIMEMIN == 0) {
-    		this.soundTrack.pause();
     		this.outOfTime();  
     	}
     }, 2000);

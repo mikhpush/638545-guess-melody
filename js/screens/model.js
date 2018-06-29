@@ -3,8 +3,9 @@ import {getElementFromTemplate, renderScreen, renderWrap, initialGameState, star
 
 
 export default class Model {
-	constructor() {
+	constructor(gameData) {
 		this.restart();
+		this.gameData = gameData;
 	}
 
 	get state() {

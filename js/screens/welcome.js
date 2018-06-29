@@ -27,13 +27,6 @@ export class WelcomeScreen extends AbstractView {
   }
 
   onAnswer() {
-    /*
-    renderScreen(new LevelView(musicCollection[gameState.FIRSTTRACK], answersArtist(gameState.FIRSTTRACK)).element);
-    renderWrap(new LevelWrapView(gameState.noteLivesMissed, globalSound).element);
-    startCircleTimer(gameState);
-    // startGame(120, timeScreen);
-    startTimer(gameState);
-    */
     Application.showGame();
 
 

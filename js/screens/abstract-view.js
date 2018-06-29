@@ -1,4 +1,4 @@
-import {renderScreen, gameState} from '../utils';
+import {renderScreen} from '../utils';
 
 import {WelcomeScreen} from './welcome';
 

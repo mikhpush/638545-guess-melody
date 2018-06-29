@@ -13,8 +13,6 @@ export let initialGameState = {
   FAST_TIME_ANSWER : 30
 };
 
-export let gameState = Object.assign({}, initialGameState);
-
 let userAnswers = [];
 
 let circleTimer;

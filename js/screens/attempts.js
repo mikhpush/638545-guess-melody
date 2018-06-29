@@ -1,4 +1,4 @@
-import {getElementFromTemplate, renderScreen, gameState} from '../utils.js';
+import {getElementFromTemplate, renderScreen} from '../utils.js';
 import {WelcomeScreen} from './welcome';
 import {AbstractView} from './abstract-view';
 
