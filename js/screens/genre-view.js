@@ -1,20 +1,12 @@
-import {getElementFromTemplate, renderScreen} from '../utils.js';
-import winScreen from './win';
-import timeScreen from './time';
-import attemptsScreen from './attempts';
-import {WelcomeScreen} from './welcome';
 import {AbstractView} from './abstract-view';
-
 
 export default class GenreView extends AbstractView {
   constructor(track, answer) {
     super();
     this.track = track;
     this.answer = answer;
-  
-    //globalSound = this.soundTrack;
   }
-  
+
   render() {
     const htmlElements = this.answer.answers.map((item, i) => {
       return `<div class="genre-answer">
@@ -27,9 +19,9 @@ export default class GenreView extends AbstractView {
                             </div>
                           </div>
                         </div>
-                        <input type="checkbox" name="answer" value="${item.genre}" id="a-${i+1}">
-                        <label class="genre-answer-check" for="a-${i+1}"></label>
-                      </div>`
+                        <input type="checkbox" name="answer" value="${item.genre}" id="a-${i + 1}">
+                        <label class="genre-answer-check" for="a-${i + 1}"></label>
+                      </div>`;
     });
 
     const htmlString = htmlElements.join(` `);
@@ -42,11 +34,11 @@ export default class GenreView extends AbstractView {
                   <button class="genre-answer-send" type="submit">Ответить</button>
                 </form>
               </div>
-            </div>`
+            </div>`;
   }
 
-  onAnswer(it, choosenAnswers) {
-    
+  onAnswer() {
+
   }
 
   bind() {
@@ -62,11 +54,10 @@ export default class GenreView extends AbstractView {
     genreSoundGlobal = soundTracks[0];
     const audioNode = document.createElement(`div`).appendChild(genreSoundGlobal);
     const nodeTree = document.querySelector(`body`);
-    console.log(`last element is ${nodeTree.lastElementChild}` )
 
     if (nodeTree.lastElementChild instanceof document.defaultView.HTMLAudioElement) {
       nodeTree.removeChild(nodeTree.lastElementChild);
-    }; 
+    }
     nodeTree.appendChild(audioNode);
 
     genreSoundGlobal.play();
@@ -77,7 +68,7 @@ export default class GenreView extends AbstractView {
     for (let i = 0; i < tracks.length; i++) {
       tracks[i].addEventListener(`click`, (evt) => {
         evt.preventDefault();
-        console.log(soundTracks[i].src)
+
         if (tracks[i].className === `player-control player-control--play`) {
           genreSoundGlobal = soundTracks[i];
           const newAudioNode = document.createElement(`div`).appendChild(genreSoundGlobal);
@@ -107,10 +98,8 @@ export default class GenreView extends AbstractView {
       evt.preventDefault();
       genreSoundGlobal.pause();
       const choosenAnswers = this.element.querySelectorAll(`.genre-answer input[type="checkbox"]`);
-      this.onAnswer(evt, choosenAnswers)
+      this.onAnswer(evt, choosenAnswers);
     });
-
-    const onAnswerHook = (it) => {this.onAnswer(it)};
   }
 
 }

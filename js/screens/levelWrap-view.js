@@ -1,7 +1,4 @@
-import {getElementFromTemplate, renderScreen, playAgain} from '../utils';
-import {WelcomeScreen} from './welcome';
 import {AbstractView} from './abstract-view';
-
 
 export class LevelWrapView extends AbstractView {
   constructor(noteLives, gameState) {
@@ -22,9 +19,9 @@ export class LevelWrapView extends AbstractView {
           style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
         <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-          <span class="timer-value-mins">${this.gameState.GAMETIMEMIN}</span><!--
+          <span class="timer-value-mins">${this.gameState.gameTimeMin}</span><!--
           --><span class="timer-value-dots">:</span><!--
-          --><span class="timer-value-secs">${((this.gameState.GAMETIMESEC != 0) ? this.gameState.GAMETIMESEC : (`0${this.gameState.GAMETIMESEC}`))}</span>
+          --><span class="timer-value-secs">${((this.gameState.gameTimeSec !== 0) ? this.gameState.gameTimeSec : (`0${this.gameState.gameTimeSec}`))}</span>
         </div>
       </svg>
 <div class="main-mistakes">
@@ -35,17 +32,17 @@ export class LevelWrapView extends AbstractView {
 
   get element() {
     if (this._element) {
-      return this._element
+      return this._element;
     }
 
     this._element = document.createElement(`div`);
     this._element.innerHTML = this.render();
 
     for (let i = 1; i <= this.noteLives; i++) {
-      const notes = document.createElement('img')
+      const notes = document.createElement(`img`);
       notes.className = `main-mistake`;
       notes.src = `img/wrong-answer.png`;
-      notes.width =`35`;
+      notes.width = `35`;
       notes.height = `49`;
       this._element.querySelector(`.main-mistakes`).insertAdjacentElement(`beforeEnd`, notes);
     }
@@ -61,14 +58,13 @@ export class LevelWrapView extends AbstractView {
   bind() {
     this.element.querySelector(`.play-again`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      if (confirm("Все данные будут потеряны. Вы уверены?") === true) {
-        this.onAnswer();
+      this.onAnswer();
+      /*
+      if (confirm(`Все данные будут потеряны. Вы уверены?`)) {
       } else {
         return;
       }
-      
+      */
     });
-
   }
-};
-
+}
