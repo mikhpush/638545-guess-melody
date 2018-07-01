@@ -59,8 +59,16 @@ export default class GenreView extends AbstractView {
       const soundTrack = new Audio(track.src);
       soundTracks.push(soundTrack);
     }
-
     genreSoundGlobal = soundTracks[0];
+    const audioNode = document.createElement(`div`).appendChild(genreSoundGlobal);
+    const nodeTree = document.querySelector(`body`);
+    console.log(`last element is ${nodeTree.lastElementChild}` )
+
+    if (nodeTree.lastElementChild instanceof document.defaultView.HTMLAudioElement) {
+      nodeTree.removeChild(nodeTree.lastElementChild);
+    }; 
+    nodeTree.appendChild(audioNode);
+
     genreSoundGlobal.play();
 
     const tracks = this.element.querySelectorAll(`.player-control`);
@@ -68,13 +76,15 @@ export default class GenreView extends AbstractView {
 
     for (let i = 0; i < tracks.length; i++) {
       tracks[i].addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        console.log(soundTracks[i].src)
         if (tracks[i].className === `player-control player-control--play`) {
-          evt.preventDefault();
           genreSoundGlobal = soundTracks[i];
+          const newAudioNode = document.createElement(`div`).appendChild(genreSoundGlobal);
+          document.querySelector(`body`).replaceChild(newAudioNode, nodeTree.lastElementChild);
           genreSoundGlobal.play();
           tracks[i].className = `player-control player-control--pause`;
         } else {
-          evt.preventDefault();
           genreSoundGlobal.pause();
           tracks[i].className = `player-control player-control--play`;
         }

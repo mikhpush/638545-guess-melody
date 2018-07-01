@@ -5,7 +5,7 @@ export let initialGameState = {
   noteLivesMissed : 0,
   NOTELIVES : 3,
   GAMETIMEMIN : 5,
-  GAMETIMESEC : 0,
+  GAMETIMESEC : 00,
   timeSpentSec : 0,
   perAnswerCounter : 0,
   CIRCLELENGTH : 2325,
@@ -50,6 +50,12 @@ export const startTimer = (arg) => {
     document.querySelector(`.timer-value-mins`).innerHTML = arg.GAMETIMEMIN;
     document.querySelector(`.timer-value-secs`).innerHTML = twoDigitSecDisplay;
     arg.GAMETIMESEC -= 1;
+
+    if (arg.GAMETIMEMIN === 0 && arg.GAMETIMESEC < 30) {
+      const timerContainer = document.querySelector(`.timer-value`);
+      timerContainer.style.color = (timerContainer.style.color === `red`) ? (`#ff9749`) : (`red`);
+    }
+
   }, 1000);
 };
 

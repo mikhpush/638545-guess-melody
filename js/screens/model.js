@@ -13,10 +13,8 @@ export default class Model {
 	}
 
 	tick() {
-		//let circleTimer;
-		//let timer;
-		startCircleTimer(this._state);
 		startTimer(this._state);
+		startCircleTimer(this._state);
 	}
 
 	stopTick() {

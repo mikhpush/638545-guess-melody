@@ -81,8 +81,17 @@ export class LevelView extends AbstractView {
 
 	bind() {
 		let artistSoundGlobal = new Audio(this.track.src);
-
+		const node = document.createElement(`div`).appendChild(artistSoundGlobal);
+		const nodeTree = document.querySelector(`body`);
+		if (nodeTree.lastElementChild instanceof document.defaultView.HTMLAudioElement) {
+			nodeTree.removeChild(nodeTree.lastElementChild);
+		}; 
+		nodeTree.appendChild(node);
 		artistSoundGlobal.play();
+
+
+
+		console.log(document.querySelector(`.soundtrack`));
 
 		const onAnswerHook = (it) => {this.onAnswer(it)};
 
@@ -105,7 +114,7 @@ export class LevelView extends AbstractView {
   	
   	answerButton.forEach(function (it) {
 	    it.addEventListener(`click`, () => {
-	    	artistSoundGlobal.pause();
+	    	nodeTree.removeChild(nodeTree.lastElementChild);
 	    	onAnswerHook(it);
 	    });
 	  });

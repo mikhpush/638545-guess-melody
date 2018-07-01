@@ -59,8 +59,14 @@ export class LevelWrapView extends AbstractView {
   }
 
   bind() {
-    this.element.querySelector(`.play-again`).addEventListener(`click`, () => {
-      this.onAnswer();
+    this.element.querySelector(`.play-again`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      if (confirm("Все данные будут потеряны. Вы уверены?") === true) {
+        this.onAnswer();
+      } else {
+        return;
+      }
+      
     });
 
   }

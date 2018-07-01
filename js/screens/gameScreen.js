@@ -110,8 +110,8 @@ export default class GameScreen {
     this.wrapper.onAnswer = this.playAgain.bind(this);
     renderScreen(this.content.element);
     renderWrap(this.wrapper.element);
-    const timeListener = setInterval(() =>{
-    	if (this.model.state.GAMETIMESEC == 0 && this.model.state.GAMETIMEMIN == 0) {
+    const timeListener = setInterval(() => {
+    	if (this.model.state.GAMETIMESEC === 0 && this.model.state.GAMETIMEMIN === 0) {
     		this.outOfTime();  
     	}
     }, 2000);
@@ -134,8 +134,14 @@ export default class GameScreen {
 	}
 
 	playAgain() {
+		const currentTracks = document.querySelectorAll(`audio`);
+		for (const singleTrack of currentTracks) {
+			singleTrack.pause();
+		}
+		this.model.stopTick();
 		this.model.restart();
 		Application.showWelcome();
+		
 	}
 
 	results() {
