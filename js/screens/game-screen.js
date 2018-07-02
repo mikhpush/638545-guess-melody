@@ -4,16 +4,15 @@ import {LevelWrapView} from './levelWrap-view';
 import {AttemptsScreen} from './attempts';
 import {TimeScreen} from './time';
 import {Application} from './application';
-import lastGamesResults from '../answers/lastGamesResults.js';
 import {adaptedAnswersData, adaptedMusicCollection} from './data-adapter';
 import GenreView from './genre-view';
+import Loader from './loader';
 
 export default class GameScreen {
   constructor(model) {
     this.model = model;
     this.track = adaptedMusicCollection(this.model.state.currentTrack, this.model.gameData);
     this.answer = adaptedAnswersData(this.model.state.currentTrack, this.model.gameData);
-
   }
 
   onGameAnswer(it, choosenAnswers) {
@@ -29,6 +28,10 @@ export default class GameScreen {
           break;
         } else if (choice.checked === true && choice.value === this.answer.genre) {
           isCorrect = true;
+        } else if (choice.checked !== true && choice.value === this.answer.genre) {
+          isCorrect = false;
+          this.model.attemptLoss();
+          break;
         }
       }
 
@@ -51,36 +54,48 @@ export default class GameScreen {
     if (this.model.state.currentTrack === (this.model.state.AMOUNTOFGAMES - 1)) {
       const finalScore = userScoreCounter(this.model.state);
 
-      const userResultsScope = {
-        gameTimeLeft: (this.model.state.gameTimeMin * 60 + this.model.state.gameTimeSec),
-        noteLives: (this.model.state.NOTELIVES - this.model.state.noteLivesMissed),
-        userScore: finalScore
+      const userResultsData = {
+        date: new Date(),
+        time: this.model.state.timeSpentSec,
+        answers: this.model.state.userAnswers
       };
 
-      lastGamesResults.push(userResultsScope);
-      const allGamesResults = lastGamesResults;
+      let previousGamesData;
 
-      const statistics = allGamesResults.map(function (arg) {
-        return arg.userScore;
+      Loader.loadResults().
+      then((data) => {
+        previousGamesData = data;
+      }).
+      then(() => {
+        previousGamesData.push(userResultsData);
+
+        const statistics = previousGamesData.map(function (arg) {
+          const score = userScoreCounter(arg.answers);
+          return score;
+        });
+
+        statistics.sort(function (a, b) {
+          return b - a;
+        });
+
+        const userPositionIndex = statistics.findIndex(function (arg) {
+          return arg === finalScore;
+        });
+
+        const userComparison = () => {
+          return Math.round((previousGamesData.length - userPositionIndex - 1) / previousGamesData.length * 100);
+        };
+
+        const fastAnswers = fastAnswersAmount();
+        userComparison();
+
+        Loader.saveResults(userResultsData);
+
+        Application.showStats(previousGamesData, finalScore, userPositionIndex,
+            userComparison, this.model.state, fastAnswers);
+        return;
       });
 
-      statistics.sort(function (a, b) {
-        return b - a;
-      });
-
-      const userPositionIndex = statistics.findIndex(function (arg) {
-        return arg === userResultsScope.userScore;
-      });
-
-      const userComparison = () => {
-        return Math.round((allGamesResults.length - userPositionIndex - 1) / allGamesResults.length * 100);
-      };
-
-      const fastAnswers = fastAnswersAmount();
-      userComparison();
-      Application.showStats(allGamesResults, userResultsScope, userPositionIndex,
-          userComparison, this.model.state, fastAnswers);
-      return;
     }
 
     this.model.state.currentTrack += 1;

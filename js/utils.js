@@ -4,6 +4,7 @@ export let initialGameState = {
   AMOUNTOFGAMES: 10,
   noteLivesMissed: 0,
   NOTELIVES: 3,
+  GAMETIMESEC: 300,
   gameTimeMin: 5,
   gameTimeSec: 0,
   timeSpentSec: 0,
@@ -17,7 +18,8 @@ export let initialGameState = {
 let circleTimer;
 
 export const startCircleTimer = (arg) => {
-  const circleCutShift = (arg.CIRCLELENGTH / ((arg.gameTimeMin * 60 + arg.gameTimeSec) * 20));
+
+  const circleCutShift = (arg.CIRCLELENGTH / (initialGameState.GAMETIMESEC * 20));
   circleTimer = setInterval(() => {
     document.querySelector(`.timer-line`).style.strokeDashoffset = arg.circleCut;
     arg.circleCut += circleCutShift;
@@ -78,17 +80,21 @@ export const stopTimer = () => {
 };
 
 export const addUserAnswer = (isCorrect, timeSpent) => {
-  let newAnser = {
-    isCorrect,
-    timeSpent
-  };
+
+  let newAnser;
+  if (isCorrect === true) {
+    newAnser = timeSpent;
+  } else {
+    newAnser = -1;
+  }
+
   initialGameState.userAnswers.push(newAnser);
 };
 
 export const fastAnswersAmount = () => {
   let number = 0;
   initialGameState.userAnswers.forEach((it) => {
-    if (it.timeSpent < initialGameState.FAST_TIME_ANSWER) {
+    if (it < initialGameState.FAST_TIME_ANSWER && it > 0) {
       number += 1;
     }
   });
@@ -128,11 +134,11 @@ export const userScoreCounter = (arg) => {
   }
 
   initialGameState.userAnswers.forEach(function (it) {
-    if (it.isCorrect === true && it.timeSpent < initialGameState.FAST_TIME_ANSWER) {
+    if (it < initialGameState.FAST_TIME_ANSWER && it > 0) {
       userScore += answerPoints.FAST;
-    } else if (it.isCorrect === true && it.timeSpent >= initialGameState.FAST_TIME_ANSWER) {
+    } else if (it >= initialGameState.FAST_TIME_ANSWER) {
       userScore += answerPoints.CORRECT;
-    } else if (it.isCorrect === false) {
+    } else if (it < 0) {
       userScore += answerPoints.INCORRECT;
     }
   });
