@@ -1,15 +1,5 @@
-
-import {getElementFromTemplate, renderScreen, renderWrap, gameState, startGame, startCircleTimer, startTimer} from '../utils.js';
-import {LevelWrapView} from './levelWrap-view';
-import {globalSound} from './level-view';
-import musicCollection from '../music/music.js';
-import answersArtist from '../answers/answersArtist.js';
-import timeScreen from './time';
 import {Application} from './application';
-import {LevelView} from './level-view';
 import {AbstractView} from './abstract-view';
-
-
 
 export class WelcomeScreen extends AbstractView {
 
@@ -23,20 +13,11 @@ export class WelcomeScreen extends AbstractView {
       Ошибиться можно 3 раза.<br>
       Удачи!
     </p>
-  </section>`
+  </section>`;
   }
 
   onAnswer() {
-    /*
-    renderScreen(new LevelView(musicCollection[gameState.FIRSTTRACK], answersArtist(gameState.FIRSTTRACK)).element);
-    renderWrap(new LevelWrapView(gameState.noteLivesMissed, globalSound).element);
-    startCircleTimer(gameState);
-    // startGame(120, timeScreen);
-    startTimer(gameState);
-    */
     Application.showGame();
-
-
   }
 
   bind() {

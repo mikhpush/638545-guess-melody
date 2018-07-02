@@ -1,8 +1,3 @@
-import {renderScreen, gameState} from '../utils';
-
-import {WelcomeScreen} from './welcome';
-
-
 export class AbstractView {
   constructor() {
     if (new.target === AbstractView) {
@@ -15,22 +10,21 @@ export class AbstractView {
   }
 
   get element() {
-		if (this._element) {
-			return this._element
-		}
-		this._element = document.createElement(`div`);
-		Object.assign(this._element.style,{width: '100%', height:'100%'});
-		this._element.innerHTML = this.render();
+    if (this._element) {
+      return this._element;
+    }
+    this._element = document.createElement(`div`);
+    Object.assign(this._element.style, {width: `100%`, height: `100%`});
+    this._element.innerHTML = this.render();
     this.bind();
-		return this._element;
+    return this._element;
   }
 
   render() {
-    return render(this.template);
+    return this.template;
   }
 
   bind() {
-    
   }
 
-};
+}
