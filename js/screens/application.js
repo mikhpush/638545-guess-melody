@@ -6,8 +6,9 @@ import {WelcomeScreen} from './welcome';
 import {WinScreen} from './win';
 import SplashScreen from './splash-screen';
 import ErrorScreen from './splash-screen';
+import Loader from './loader';
 
-let gameData;
+let gameData = 0;
 
 export class Application {
 
@@ -16,9 +17,7 @@ export class Application {
     renderScreen(splash.element);
     splash.start();
     setTimeout(function () {
-      window.fetch(`https://es.dump.academy/guess-melody/questions`).
-      then((response) => splash.checkStatus(response)).
-      then((response) => response.json()).
+      Loader.loadData().
       then((data) => {
         gameData = data;
       }).
@@ -39,8 +38,8 @@ export class Application {
     gameScreen.startGame();
   }
 
-  static showStats(allGamesResults, userResultsScope, userPositionIndex, userComparison, stats, fastAnswers) {
-    const statistics = new WinScreen(allGamesResults, userResultsScope, userPositionIndex,
+  static showStats(allGamesData, finalScore, userPositionIndex, userComparison, stats, fastAnswers) {
+    const statistics = new WinScreen(allGamesData, finalScore, userPositionIndex,
         userComparison, stats, fastAnswers);
     renderScreen(statistics.element);
   }
@@ -51,3 +50,4 @@ export class Application {
   }
 
 }
+
