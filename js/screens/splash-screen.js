@@ -1,4 +1,4 @@
-import {AbstractView} from './abstract-view';
+import AbstractView from './abstract-view';
 
 export default class SplashScreen extends AbstractView {
 
@@ -8,14 +8,6 @@ export default class SplashScreen extends AbstractView {
     this.symbolsSeq = [`0`, `o`, `0`, `o`];
     this.symbolsTextSeq = [`З`, `За`, `Заг`, `Загр`, `Загру`, `Загруж`, `Загружа`, `Загружае`, `Загружаем`,
       `Загружаемс`, `Загружаемся`, `Загружаемся.`, `Загружаемся..`, `Загружаемся...`, ``];
-  }
-
-  checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
-    } else {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
   }
 
   start() {

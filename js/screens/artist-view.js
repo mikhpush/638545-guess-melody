@@ -1,7 +1,7 @@
 
-import {AbstractView} from './abstract-view';
+import AbstractView from './abstract-view';
 
-export class LevelView extends AbstractView {
+export default class LevelView extends AbstractView {
   constructor(track, answer) {
     super();
     this.track = track;

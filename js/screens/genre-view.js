@@ -1,4 +1,4 @@
-import {AbstractView} from './abstract-view';
+import AbstractView from './abstract-view';
 
 export default class GenreView extends AbstractView {
   constructor(track, answer) {
@@ -74,6 +74,9 @@ export default class GenreView extends AbstractView {
           const newAudioNode = document.createElement(`div`).appendChild(genreSoundGlobal);
           document.querySelector(`body`).replaceChild(newAudioNode, nodeTree.lastElementChild);
           genreSoundGlobal.play();
+          for(const randomTrack of tracks) {
+            randomTrack.className = `player-control player-control--play`;
+          }
           tracks[i].className = `player-control player-control--pause`;
         } else {
           genreSoundGlobal.pause();

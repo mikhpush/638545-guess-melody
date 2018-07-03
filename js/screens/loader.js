@@ -1,5 +1,3 @@
-// loader.js
-
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
 
 const APP_ID = 55783411;

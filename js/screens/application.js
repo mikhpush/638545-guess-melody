@@ -2,15 +2,15 @@
 import {renderScreen} from '../utils.js';
 import Model from './model';
 import GameScreen from './game-screen';
-import {WelcomeScreen} from './welcome';
-import {WinScreen} from './win';
+import WelcomeScreen from './welcome';
+import WinScreen from './win';
 import SplashScreen from './splash-screen';
 import ErrorScreen from './splash-screen';
 import Loader from './loader';
 
 let gameData = 0;
 
-export class Application {
+export default class Application {
 
   static showSplash() {
     const splash = new SplashScreen();
@@ -24,7 +24,7 @@ export class Application {
       then(() => Application.showWelcome()).
       catch(Application.showError).
       then(() => splash.stop());
-    }, 1000);
+    }, 2000);
   }
 
   static showWelcome() {

@@ -1,3 +1,3 @@
-import {Application} from './screens/application';
+import Application from './screens/application';
 
 Application.showSplash();

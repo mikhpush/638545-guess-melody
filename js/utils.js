@@ -1,8 +1,13 @@
+const answerPoints = {
+    CORRECT: 1,
+    FAST: 2,
+    INCORRECT: -2
+  };
 
 export let initialGameState = {
   currentTrack: 0,
   AMOUNTOFGAMES: 10,
-  noteLivesMissed: 0,
+  lostLives: 0,
   NOTELIVES: 3,
   GAMETIMESEC: 300,
   gameTimeMin: 5,
@@ -21,8 +26,10 @@ export const startCircleTimer = (arg) => {
 
   const circleCutShift = (arg.CIRCLELENGTH / (initialGameState.GAMETIMESEC * 20));
   circleTimer = setInterval(() => {
+    /*
     document.querySelector(`.timer-line`).style.strokeDashoffset = arg.circleCut;
     arg.circleCut += circleCutShift;
+    */
     if (arg.circleCut === arg.CIRCLELENGTH) {
       clearInterval(circleTimer);
     }
@@ -61,17 +68,19 @@ export const startTimer = (arg) => {
     }
     arg.perAnswerCounter += 1;
     arg.timeSpentSec += 1;
-
+/*
     let twoDigitSecDisplay = (arg.gameTimeSec < 10) ? `0${arg.gameTimeSec}` : arg.gameTimeSec;
 
     document.querySelector(`.timer-value-mins`).innerHTML = arg.gameTimeMin;
     document.querySelector(`.timer-value-secs`).innerHTML = twoDigitSecDisplay;
     arg.gameTimeSec -= 1;
-
+*/
+/*
     if (arg.gameTimeMin === 0 && arg.gameTimeSec < 30) {
       const timerContainer = document.querySelector(`.timer-value`);
       timerContainer.style.color = (timerContainer.style.color === `red`) ? (`#ff9749`) : (`red`);
     }
+    */
   }, 1000);
 };
 
@@ -81,14 +90,14 @@ export const stopTimer = () => {
 
 export const addUserAnswer = (isCorrect, timeSpent) => {
 
-  let newAnser;
+  let newAnswer;
   if (isCorrect === true) {
-    newAnser = timeSpent;
+    newAnswer = timeSpent;
   } else {
-    newAnser = -1;
+    newAnswer = -1;
   }
 
-  initialGameState.userAnswers.push(newAnser);
+  initialGameState.userAnswers.push(newAnswer);
 };
 
 export const fastAnswersAmount = () => {
@@ -99,13 +108,6 @@ export const fastAnswersAmount = () => {
     }
   });
   return number;
-};
-
-export const getElementFromTemplate = (stringTemplate) => {
-  let result = document.createElement(`div`);
-  Object.assign(result.style, {width: `100%`, height: `100%`});
-  result.innerHTML = stringTemplate;
-  return result;
 };
 
 export const renderScreen = (screen) => {
@@ -120,12 +122,6 @@ export const renderWrap = (wrapper) => {
 };
 
 export const userScoreCounter = (arg) => {
-  const answerPoints = {
-    CORRECT: 1,
-    FAST: 2,
-    INCORRECT: -2
-  };
-
   let userScore = 0;
 
   if (initialGameState.userAnswers.length < arg.AMOUNTOFGAMES) {

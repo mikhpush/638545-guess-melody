@@ -1,6 +1,6 @@
-import {AbstractView} from './abstract-view';
+import AbstractView from './abstract-view';
 
-export class LevelWrapView extends AbstractView {
+export default class LevelWrapView extends AbstractView {
   constructor(noteLives, gameState) {
     super();
     this.gameState = gameState;
@@ -19,9 +19,9 @@ export class LevelWrapView extends AbstractView {
           style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
         <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-          <span class="timer-value-mins">${this.gameState.gameTimeMin}</span><!--
-          --><span class="timer-value-dots">:</span><!--
-          --><span class="timer-value-secs">${((this.gameState.gameTimeSec !== 0) ? this.gameState.gameTimeSec : (`0${this.gameState.gameTimeSec}`))}</span>
+          <span class="timer-value-mins">5</span>
+          <span class="timer-value-dots">:</span>
+          <span class="timer-value-secs">01</span>
         </div>
       </svg>
 <div class="main-mistakes">
@@ -59,12 +59,6 @@ export class LevelWrapView extends AbstractView {
     this.element.querySelector(`.play-again`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
       this.onAnswer();
-      /*
-      if (confirm(`Все данные будут потеряны. Вы уверены?`)) {
-      } else {
-        return;
-      }
-      */
     });
   }
 }

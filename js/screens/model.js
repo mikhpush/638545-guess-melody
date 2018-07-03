@@ -20,17 +20,8 @@ export default class Model {
     stopTimer();
   }
 
-  outOfAttempts() {
-    this._state.noteLivesMissed = 3;
-  }
-
-  attemptLoss() {
-    this._state.noteLivesMissed += 1;
-  }
-
-  outOfTime() {
-    this._state.gameTimeMin = 0;
-    this._state.gameTimeSec = 0;
+  reduceAttempts() {
+    this._state.lostLives += 1;
   }
 
   restart() {

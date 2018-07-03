@@ -1,7 +1,7 @@
-import {AbstractView} from './abstract-view';
-import {Application} from './application';
+import AbstractView from './abstract-view';
+import Application from './application';
 
-export class WinScreen extends AbstractView {
+export default class WinScreen extends AbstractView {
   constructor(allGamesData, finalScore, userPositionIndex, userComparison, state, fastAnswers) {
     super();
     this.state = state;

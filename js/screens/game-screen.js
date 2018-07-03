@@ -1,10 +1,10 @@
 import {addUserAnswer, fastAnswersAmount, userScoreCounter, renderScreen, renderWrap} from '../utils.js';
-import {LevelView} from './artist-view';
-import {LevelWrapView} from './levelWrap-view';
-import {AttemptsScreen} from './attempts';
-import {TimeScreen} from './time';
-import {Application} from './application';
-import {adaptedAnswersData, adaptedMusicCollection} from './data-adapter';
+import LevelView from './artist-view';
+import LevelWrapView from './level-wrap-view';
+import AttemptsScreen from './attempts';
+import TimeScreen from './time';
+import Application from './application';
+import {adaptedAnswersData, adaptedMusicCollection} from './adapt-data';
 import GenreView from './genre-view';
 import Loader from './loader';
 
@@ -24,13 +24,13 @@ export default class GameScreen {
       for (const choice of choosenAnswers) {
         if (choice.checked === true && choice.value !== this.answer.genre) {
           isCorrect = false;
-          this.model.attemptLoss();
+          this.model.reduceAttempts();
           break;
         } else if (choice.checked === true && choice.value === this.answer.genre) {
           isCorrect = true;
         } else if (choice.checked !== true && choice.value === this.answer.genre) {
           isCorrect = false;
-          this.model.attemptLoss();
+          this.model.reduceAttempts();
           break;
         }
       }
@@ -40,12 +40,12 @@ export default class GameScreen {
         isCorrect = true;
       } else {
         isCorrect = false;
-        this.model.attemptLoss();
+        this.model.reduceAttempts();
       }
     }
 
-    if (this.model.state.noteLivesMissed === this.model.state.NOTELIVES) {
-      this.outOfAttempts();
+    if (this.model.state.lostLives === this.model.state.NOTELIVES) {
+      this.loseAttempts();
       return;
     }
 
@@ -93,7 +93,6 @@ export default class GameScreen {
 
         Application.showStats(previousGamesData, finalScore, userPositionIndex,
             userComparison, this.model.state, fastAnswers);
-        return;
       });
 
     }
@@ -114,19 +113,19 @@ export default class GameScreen {
       this.content = new GenreView(this.track, this.answer);
     }
     this.content.onAnswer = this.onGameAnswer.bind(this);
-    this.wrapper = new LevelWrapView(this.model.state.noteLivesMissed, this.model.state);
+    this.wrapper = new LevelWrapView(this.model.state.lostLives, this.model.state);
     this.wrapper.onAnswer = this.playAgain.bind(this);
     renderScreen(this.content.element);
     renderWrap(this.wrapper.element);
     const timeListener = setInterval(() => {
       if (this.model.state.gameTimeMin === 0 && this.model.state.gameTimeSec === 0) {
-        this.outOfTime();
+        this.loseTime();
         clearInterval(timeListener);
       }
     }, 2000);
   }
 
-  outOfAttempts() {
+  loseAttempts() {
     const attemptsScreen = new AttemptsScreen().element;
     attemptsScreen.querySelector(`.main-replay`).addEventListener(`click`, () => {
       this.playAgain();
@@ -134,7 +133,7 @@ export default class GameScreen {
     renderScreen(attemptsScreen);
   }
 
-  outOfTime() {
+  loseTime() {
     const timeScreen = new TimeScreen().element;
     timeScreen.querySelector(`.main-replay`).addEventListener(`click`, () => {
       this.playAgain();

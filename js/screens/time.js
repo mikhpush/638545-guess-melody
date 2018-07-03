@@ -1,6 +1,6 @@
-import {AbstractView} from './abstract-view';
+import AbstractView from './abstract-view';
 
-export class TimeScreen extends AbstractView {
+export default class TimeScreen extends AbstractView {
 
   render() {
     return `<div class="main main--result">

@@ -4,19 +4,11 @@ export const adaptedAnswersData = (n, gameData) => {
   let result;
 
   if (gameData[n].type === `artist`) {
-    /*  let correctName;
-
-    for(const correctTrack of gameData[n].answers) {
-      if (correctTrack.isCorrect) {
-      correctName = correctTrack.title;
-      }
-    };
-    */
     result = {
-      val1: gameData[n].answers[0].title, // string
+      val1: gameData[n].answers[0].title,
       val2: gameData[n].answers[1].title,
       val3: gameData[n].answers[2].title,
-      img1: gameData[n].answers[0].image.url, // src
+      img1: gameData[n].answers[0].image.url,
       img2: gameData[n].answers[1].image.url,
       img3: gameData[n].answers[2].image.url
     };

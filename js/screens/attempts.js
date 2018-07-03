@@ -1,6 +1,6 @@
-import {AbstractView} from './abstract-view';
+import AbstractView from './abstract-view';
 
-export class AttemptsScreen extends AbstractView {
+export default class AttemptsScreen extends AbstractView {
 
   render() {
     return `<div class="main main--result">

@@ -1,7 +1,7 @@
-import {Application} from './application';
-import {AbstractView} from './abstract-view';
+import Application from './application';
+import AbstractView from './abstract-view';
 
-export class WelcomeScreen extends AbstractView {
+export default class WelcomeScreen extends AbstractView {
 
   render() {
     return `<section class="main main--welcome">
