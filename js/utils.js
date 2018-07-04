@@ -1,22 +1,24 @@
-const answerPoints = {
+export const GAME_CONSTS = {
+  ANSWER_POINTS: {
     CORRECT: 1,
     FAST: 2,
     INCORRECT: -2
-  };
+  },
+  FAST_TIME_ANSWER: 30,
+  CIRCLE_LENGTH: 2325,
+  AMOUNT_OF_GAMES: 10,
+  GAME_TIME_SEC: 300,
+  NOTE_LIVES: 3
+};
 
 export let initialGameState = {
   currentTrack: 0,
-  AMOUNTOFGAMES: 10,
   lostLives: 0,
-  NOTELIVES: 3,
-  GAMETIMESEC: 300,
   gameTimeMin: 5,
   gameTimeSec: 0,
   timeSpentSec: 0,
   perAnswerCounter: 0,
-  CIRCLELENGTH: 2325,
   circleCut: 0,
-  FAST_TIME_ANSWER: 30,
   userAnswers: []
 };
 
@@ -24,16 +26,14 @@ let circleTimer;
 
 export const startCircleTimer = (arg) => {
 
-  const circleCutShift = (arg.CIRCLELENGTH / (initialGameState.GAMETIMESEC * 20));
+  const circleCutShift = (GAME_CONSTS.CIRCLE_LENGTH / (GAME_CONSTS.GAME_TIME_SEC));
   circleTimer = setInterval(() => {
-    /*
     document.querySelector(`.timer-line`).style.strokeDashoffset = arg.circleCut;
     arg.circleCut += circleCutShift;
-    */
-    if (arg.circleCut === arg.CIRCLELENGTH) {
+    if (arg.circleCut === GAME_CONSTS.CIRCLE_LENGTH) {
       clearInterval(circleTimer);
     }
-  }, 50);
+  }, 1000);
 };
 
 export const stopCircleTimer = () => {
@@ -68,19 +68,18 @@ export const startTimer = (arg) => {
     }
     arg.perAnswerCounter += 1;
     arg.timeSpentSec += 1;
-/*
     let twoDigitSecDisplay = (arg.gameTimeSec < 10) ? `0${arg.gameTimeSec}` : arg.gameTimeSec;
 
     document.querySelector(`.timer-value-mins`).innerHTML = arg.gameTimeMin;
     document.querySelector(`.timer-value-secs`).innerHTML = twoDigitSecDisplay;
     arg.gameTimeSec -= 1;
-*/
-/*
+
+
     if (arg.gameTimeMin === 0 && arg.gameTimeSec < 30) {
       const timerContainer = document.querySelector(`.timer-value`);
       timerContainer.style.color = (timerContainer.style.color === `red`) ? (`#ff9749`) : (`red`);
     }
-    */
+
   }, 1000);
 };
 
@@ -88,22 +87,44 @@ export const stopTimer = () => {
   clearInterval(timer);
 };
 
-export const addUserAnswer = (isCorrect, timeSpent) => {
+export const compareUsers = (previousGamesData, userPositionIndex) => {
+  const rank = Math.round((previousGamesData.length - userPositionIndex - 1) / previousGamesData.length * 100);
+  return rank;
+};
+
+export const addUserAnswer = (isCorrect, modelState) => {
 
   let newAnswer;
   if (isCorrect === true) {
-    newAnswer = timeSpent;
+    newAnswer = modelState.perAnswerCounter;
   } else {
     newAnswer = -1;
   }
 
-  initialGameState.userAnswers.push(newAnswer);
+  modelState.userAnswers.push(newAnswer);
 };
 
-export const fastAnswersAmount = () => {
+export const getUserPositionIndex = (previousGamesData, finalScore) => {
+  const statistics = previousGamesData.map(function (arg) {
+    const score = userScoreCounter(arg.answers);
+    return score;
+  });
+
+  statistics.sort(function (a, b) {
+    return b - a;
+  });
+
+  const userPosition = statistics.findIndex(function (arg) {
+    return arg === finalScore;
+  });
+
+  return userPosition;
+};
+
+export const fastAnswersAmount = (modelState) => {
   let number = 0;
-  initialGameState.userAnswers.forEach((it) => {
-    if (it < initialGameState.FAST_TIME_ANSWER && it > 0) {
+  modelState.userAnswers.forEach((it) => {
+    if (it < GAME_CONSTS.FAST_TIME_ANSWER && it > 0) {
       number += 1;
     }
   });
@@ -124,18 +145,18 @@ export const renderWrap = (wrapper) => {
 export const userScoreCounter = (arg) => {
   let userScore = 0;
 
-  if (initialGameState.userAnswers.length < arg.AMOUNTOFGAMES) {
+  if (arg.length < GAME_CONSTS.AMOUNT_OF_GAMES) {
     userScore = -1;
     return userScore;
   }
 
-  initialGameState.userAnswers.forEach(function (it) {
-    if (it < initialGameState.FAST_TIME_ANSWER && it > 0) {
-      userScore += answerPoints.FAST;
-    } else if (it >= initialGameState.FAST_TIME_ANSWER) {
-      userScore += answerPoints.CORRECT;
+  arg.forEach(function (it) {
+    if (it < GAME_CONSTS.FAST_TIME_ANSWER && it > 0) {
+      userScore += GAME_CONSTS.ANSWER_POINTS.FAST;
+    } else if (it >= GAME_CONSTS.FAST_TIME_ANSWER) {
+      userScore += GAME_CONSTS.ANSWER_POINTS.CORRECT;
     } else if (it < 0) {
-      userScore += answerPoints.INCORRECT;
+      userScore += GAME_CONSTS.ANSWER_POINTS.INCORRECT;
     }
   });
 

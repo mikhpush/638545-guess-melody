@@ -30,6 +30,7 @@ export const adaptedMusicCollection = (n, gameData) => {
     for (const correctTrack of gameData[n].answers) {
       if (correctTrack.isCorrect) {
         correctName = correctTrack.title;
+        break;
       }
     }
 

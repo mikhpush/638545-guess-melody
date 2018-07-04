@@ -22,8 +22,8 @@ export default class Loader {
     return window.fetch(`${SERVER_URL}/stats/${APP_ID}`).then(checkStatus).then(toJSON);
   }
 
-  static saveResults(userResusltsData) {
-    const data = userResusltsData;
+  static saveResults(userResultsData) {
+    const data = userResultsData;
 
     const requestSettings = {
       body: JSON.stringify(data),

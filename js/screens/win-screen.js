@@ -17,10 +17,10 @@ export default class WinScreen extends AbstractView {
       <h2 class="title">Вы настоящий меломан!</h2>
       <div class="main-stat">За&nbsp;${Math.floor(this.state.timeSpentSec / 60)}&nbsp;минуты и ${this.state.timeSpentSec % 60}&nbsp;секунд
         <br>вы&nbsp;набрали ${this.finalScore} баллов (${this.fastAnswers} быстрых)
-        <br>совершив ${this.state.noteLivesMissed} ошибки
+        <br>совершив ${this.state.lostLives} ошибки
       </div>
       <span class="main-comparison">Вы заняли ${this.userPositionIndex + 1} место из ${this.allGamesData.length}.
-       Это&nbsp;лучше чем у&nbsp;${this.userComparison()}%&nbsp;игроков</span>
+       Это&nbsp;лучше чем у&nbsp;${this.userComparison}%&nbsp;игроков</span>
       <span role="button" tabindex="0" class="main-replay">Сыграть ещё раз</span>
       </div>`;
   }

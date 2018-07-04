@@ -74,7 +74,7 @@ export default class GenreView extends AbstractView {
           const newAudioNode = document.createElement(`div`).appendChild(genreSoundGlobal);
           document.querySelector(`body`).replaceChild(newAudioNode, nodeTree.lastElementChild);
           genreSoundGlobal.play();
-          for(const randomTrack of tracks) {
+          for (const randomTrack of tracks) {
             randomTrack.className = `player-control player-control--play`;
           }
           tracks[i].className = `player-control player-control--pause`;
@@ -100,8 +100,8 @@ export default class GenreView extends AbstractView {
     genreAnswer.addEventListener(`click`, (evt) => {
       evt.preventDefault();
       genreSoundGlobal.pause();
-      const choosenAnswers = this.element.querySelectorAll(`.genre-answer input[type="checkbox"]`);
-      this.onAnswer(evt, choosenAnswers);
+      const chosenAnswers = this.element.querySelectorAll(`.genre-answer input[type="checkbox"]`);
+      this.onAnswer(evt, chosenAnswers);
     });
   }
 

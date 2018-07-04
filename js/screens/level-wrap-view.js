@@ -5,6 +5,7 @@ export default class LevelWrapView extends AbstractView {
     super();
     this.gameState = gameState;
     this.noteLives = noteLives;
+    this.sec = (this.gameState.gameTimeSec < 10) ? (`0${this.gameState.gameTimeSec}`) : this.gameState.gameTimeSec;
 
   }
 
@@ -17,13 +18,13 @@ export default class LevelWrapView extends AbstractView {
           cx="390" cy="390" r="370"
           class="timer-line"
           style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
-
-        <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-          <span class="timer-value-mins">5</span>
-          <span class="timer-value-dots">:</span>
-          <span class="timer-value-secs">01</span>
-        </div>
       </svg>
+        <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
+          <span class="timer-value-mins">${this.gameState.gameTimeMin}</span><!--
+          --><span class="timer-value-dots">:</span><!--
+          --><span class="timer-value-secs">${this.sec}</span>
+        </div>
+      
 <div class="main-mistakes">
         
       </div>
@@ -52,13 +53,48 @@ export default class LevelWrapView extends AbstractView {
   }
 
   onAnswer() {
-    super.onAnswer();
+
+  }
+
+  showQuestion() {
+    const boxMarkup = `
+        <p>Внимание! Все данные текущей игры будут утеряны</p>
+        <button class="confirm">не игра и была</button>
+        <button class="cancel">ой, не надо</button>
+      `;
+    const dialogBox = document.createElement(`div`);
+    dialogBox.style.cssText = `
+        width: 240px;
+        height: 100px;
+        z-index: 10;
+        position: absolute;
+        margin: auto;
+        padding: 20px;
+        background-color: #333333;
+      `;
+    dialogBox.innerHTML = boxMarkup;
+    dialogBox.style.visibility = `hidden`;
+    document.querySelector(`body`).appendChild(dialogBox);
+
+    dialogBox.querySelector(`.confirm`).addEventListener(`click`, () => {
+      this.onAnswer();
+      dialogBox.style.visibility = `hidden`;
+    });
+
+    dialogBox.querySelector(`.cancel`).addEventListener(`click`, () => {
+      dialogBox.style.visibility = `hidden`;
+    });
+
+    return dialogBox;
   }
 
   bind() {
+
+
     this.element.querySelector(`.play-again`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
       this.onAnswer();
     });
+
   }
 }

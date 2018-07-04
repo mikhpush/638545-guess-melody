@@ -1,9 +1,8 @@
-
 import {renderScreen} from '../utils.js';
 import Model from './model';
 import GameScreen from './game-screen';
 import WelcomeScreen from './welcome';
-import WinScreen from './win';
+import WinScreen from './win-screen';
 import SplashScreen from './splash-screen';
 import ErrorScreen from './splash-screen';
 import Loader from './loader';
@@ -50,4 +49,3 @@ export default class Application {
   }
 
 }
-

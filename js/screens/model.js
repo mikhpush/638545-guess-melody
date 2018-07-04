@@ -26,5 +26,6 @@ export default class Model {
 
   restart() {
     this._state = Object.assign({}, initialGameState);
+    this._state.userAnswers = [];
   }
 }
