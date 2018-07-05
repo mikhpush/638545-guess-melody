@@ -5,7 +5,6 @@ export default class SplashScreen extends AbstractView {
   constructor() {
     super();
     this.cursor = 0;
-    this.symbolsSeq = [`0`, `o`, `0`, `o`];
     this.symbolsTextSeq = [`З`, `За`, `Заг`, `Загр`, `Загру`, `Загруж`, `Загружа`, `Загружае`, `Загружаем`,
       `Загружаемс`, `Загружаемся`, `Загружаемся.`, `Загружаемся..`, `Загружаемся...`, ``];
   }

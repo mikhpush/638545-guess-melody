@@ -8,7 +8,7 @@ export default class WelcomeScreen extends AbstractView {
       this.onAnswer();
     });
   }
-  
+
   render() {
     return `<section class="main main--welcome">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>

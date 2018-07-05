@@ -71,15 +71,10 @@ export const startTimer = (arg) => {
 
     arg.perAnswerCounter += 1;
     arg.timeSpentSec += 1;
-    
+
     let twoDigitSecDisplay = (arg.gameTimeSec < 10) ? `0${arg.gameTimeSec}` : arg.gameTimeSec;
-
-    
-
     document.querySelector(`.timer-value-mins`).innerHTML = arg.gameTimeMin;
     document.querySelector(`.timer-value-secs`).innerHTML = twoDigitSecDisplay;
-    
-
 
     if (arg.gameTimeMin === 0 && arg.gameTimeSec < 30) {
       const timerContainer = document.querySelector(`.timer-value`);
