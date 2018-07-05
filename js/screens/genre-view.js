@@ -7,40 +7,6 @@ export default class GenreView extends AbstractView {
     this.answer = answer;
   }
 
-  render() {
-    const htmlElements = this.answer.answers.map((item, i) => {
-      return `<div class="genre-answer">
-                        <div class="player-wrapper">
-                          <div class="player">
-                            <audio></audio>
-                            <button class="player-control player-control--play"></button>
-                            <div class="player-track">
-                              <span class="player-status"></span>
-                            </div>
-                          </div>
-                        </div>
-                        <input type="checkbox" name="answer" value="${item.genre}" id="a-${i + 1}">
-                        <label class="genre-answer-check" for="a-${i + 1}"></label>
-                      </div>`;
-    });
-
-    const htmlString = htmlElements.join(` `);
-
-    return `<div class="main main--level main--level-genre">
-              <div class="main-wrap">
-                <h2 class="title">${this.answer.question}</h2>
-                <form class="genre">
-                  ${htmlString}
-                  <button class="genre-answer-send" type="submit">Ответить</button>
-                </form>
-              </div>
-            </div>`;
-  }
-
-  onAnswer() {
-
-  }
-
   bind() {
 
     let genreSoundGlobal;
@@ -103,6 +69,40 @@ export default class GenreView extends AbstractView {
       const chosenAnswers = this.element.querySelectorAll(`.genre-answer input[type="checkbox"]`);
       this.onAnswer(evt, chosenAnswers);
     });
+  }
+
+  render() {
+    const htmlElements = this.answer.answers.map((item, i) => {
+      return `<div class="genre-answer">
+                        <div class="player-wrapper">
+                          <div class="player">
+                            <audio></audio>
+                            <button class="player-control player-control--play"></button>
+                            <div class="player-track">
+                              <span class="player-status"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <input type="checkbox" name="answer" value="${item.genre}" id="a-${i + 1}">
+                        <label class="genre-answer-check" for="a-${i + 1}"></label>
+                      </div>`;
+    });
+
+    const htmlString = htmlElements.join(` `);
+
+    return `<div class="main main--level main--level-genre">
+              <div class="main-wrap">
+                <h2 class="title">${this.answer.question}</h2>
+                <form class="genre">
+                  ${htmlString}
+                  <button class="genre-answer-send" type="submit">Ответить</button>
+                </form>
+              </div>
+            </div>`;
+  }
+
+  onAnswer() {
+
   }
 
 }

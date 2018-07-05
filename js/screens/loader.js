@@ -5,9 +5,9 @@ const APP_ID = 55783411;
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
+  } 
+
+  throw new Error(`${response.status}: ${response.statusText}`);
 };
 
 const toJSON = (res) => res.json();

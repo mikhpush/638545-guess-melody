@@ -41,7 +41,7 @@ export default class GameScreen {
           break;
         } else if (choice.checked && choice.value === this.answer.genre) {
           isCorrect = true;
-        } else if (choice.checked !== true && choice.value === this.answer.genre) {
+        } else if (!choice.checked && choice.value === this.answer.genre) {
           isCorrect = false;
           this.model.reduceAttempts();
           break;
@@ -76,46 +76,6 @@ export default class GameScreen {
     };
 
     return results;
-  }
-
-  onAnswer(it, chosenAnswers) {
-    this.model.stopTick();
-
-    const isCorrect = this.checkIsCorrect(it, chosenAnswers);
-
-    if (this.model.state.lostLives === GAME_CONSTS.NOTE_LIVES) {
-      this.loseAttempts();
-      return;
-    }
-
-    addUserAnswer(isCorrect, this.model.state);
-
-    if (this.model.state.currentTrack === (GAME_CONSTS.AMOUNT_OF_GAMES - 1)) {
-
-      let previousGamesData;
-      const finalScore = userScoreCounter(this.model.state.userAnswers);
-      const userResultsData = this.getUserResults();
-
-      Loader.loadResults().
-      then((data) => {
-        previousGamesData = data;
-      }).
-      then(() => {
-        previousGamesData.push(userResultsData);
-        const userPositionIndex = getUserPositionIndex(previousGamesData, finalScore);
-
-        const userComparison = compareUsers(previousGamesData, userPositionIndex);
-        const fastAnswers = fastAnswersAmount(this.model.state);
-
-        Loader.saveResults(userResultsData);
-
-        Application.showStats(previousGamesData, finalScore, userPositionIndex,
-            userComparison, this.model.state, fastAnswers);
-      });
-
-    } else {
-      this.getNextlevel();
-    }
   }
 
 
@@ -156,6 +116,10 @@ export default class GameScreen {
   }
 
   loseTime() {
+    const currentTracks = document.querySelectorAll(`audio`);
+    for (const singleTrack of currentTracks) {
+      singleTrack.pause();
+    }
     const timeScreen = new TimeScreen().element;
     timeScreen.querySelector(`.main-replay`).addEventListener(`click`, () => {
       this.playAgain();
@@ -178,5 +142,45 @@ export default class GameScreen {
     this.model.stopTick();
     this.model.restart();
     Application.showWelcome();
+  }
+
+  onAnswer(it, chosenAnswers) {
+    this.model.stopTick();
+
+    const isCorrect = this.checkIsCorrect(it, chosenAnswers);
+
+    if (this.model.state.lostLives === GAME_CONSTS.NOTE_LIVES) {
+      this.loseAttempts();
+      return;
+    }
+
+    addUserAnswer(isCorrect, this.model.state);
+
+    if (this.model.state.currentTrack === (GAME_CONSTS.AMOUNT_OF_GAMES - 1)) {
+
+      let previousGamesData;
+      const finalScore = userScoreCounter(this.model.state.userAnswers);
+      const userResultsData = this.getUserResults();
+
+      Loader.loadResults().
+      then((data) => {
+        previousGamesData = data;
+      }).
+      then(() => {
+        previousGamesData.push(userResultsData);
+        const userPositionIndex = getUserPositionIndex(previousGamesData, finalScore);
+
+        const userComparison = compareUsers(previousGamesData, userPositionIndex);
+        const fastAnswers = fastAnswersAmount(this.model.state);
+
+        Loader.saveResults(userResultsData);
+
+        Application.showStats(previousGamesData, finalScore, userPositionIndex,
+            userComparison, this.model.state, fastAnswers);
+      });
+
+    } else {
+      this.getNextlevel();
+    }
   }
 }

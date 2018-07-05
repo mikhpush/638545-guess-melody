@@ -8,6 +8,18 @@ export default class LevelView extends AbstractView {
     this.answer = answer;
   }
 
+  get element() {
+    if (this._element) {
+      return this._element;
+    }
+
+    this._element = document.createElement(`div`);
+    Object.assign(this._element.style, {width: `100%`, height: `100%`});
+    this._element.innerHTML = this.render();
+    this.bind();
+    return this._element;
+  }
+
   render() {
     return `<div class="main main--level main--level-artist">
       <div class="main-wrap">
@@ -52,19 +64,6 @@ export default class LevelView extends AbstractView {
           </form>
         </div>
       </div>`;
-  }
-
-
-  get element() {
-    if (this._element) {
-      return this._element;
-    }
-
-    this._element = document.createElement(`div`);
-    Object.assign(this._element.style, {width: `100%`, height: `100%`});
-    this._element.innerHTML = this.render();
-    this.bind();
-    return this._element;
   }
 
   onAnswer() {

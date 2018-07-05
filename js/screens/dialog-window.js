@@ -26,20 +26,22 @@ export default class DialogWindow extends AbstractView {
   </section>`;
   }
 
-  onAnswer() {
-
-  }
-
   bind() {
     for (const answer of this.element.querySelectorAll(`.modal-confirm__btn`)) {
       answer.addEventListener(`click`, (it) => {
+        it.preventDefault();
         this.onAnswer(it.target);
       });
     }
 
     this.element.querySelector(`.modal-confirm__close`).addEventListener(`click`, (it) => {
+      it.preventDefault();
       this.onAnswer(it.target);
     });
+
+  }
+
+  onAnswer() {
 
   }
 

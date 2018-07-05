@@ -10,16 +10,6 @@ export default class SplashScreen extends AbstractView {
       `Загружаемс`, `Загружаемся`, `Загружаемся.`, `Загружаемся..`, `Загружаемся...`, ``];
   }
 
-  start() {
-    this.cursor = ++this.cursor >= this.symbolsTextSeq.length ? 0 : this.cursor;
-    this.element.querySelector(`.loader-text`).textContent = `${this.symbolsTextSeq[this.cursor]}`;
-    this.timeout = setTimeout(() => this.start(), 100);
-  }
-
-  stop() {
-    clearTimeout(this.timeout);
-  }
-
   get element() {
     if (this._element) {
       return this._element;
@@ -45,5 +35,16 @@ export default class SplashScreen extends AbstractView {
         </div>
         <div class="loader-text" style="margin-top:120px;color:#ff9749;width:300px;font-size:46px;"> 
       </div>`;
+  }
+
+  start() {
+    this.cursor++;
+    this.cursor = this.cursor >= this.symbolsTextSeq.length ? 0 : this.cursor;
+    this.element.querySelector(`.loader-text`).textContent = `${this.symbolsTextSeq[this.cursor]}`;
+    this.timeout = setTimeout(() => this.start(), 100);
+  }
+
+  stop() {
+    clearTimeout(this.timeout);
   }
 }

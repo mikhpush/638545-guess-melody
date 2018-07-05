@@ -7,7 +7,6 @@ export const GAME_CONSTS = {
   FAST_TIME_ANSWER: 30,
   CIRCLE_LENGTH: 2325,
   AMOUNT_OF_GAMES: 10,
-  GAME_TIME_SEC: 300,
   NOTE_LIVES: 3
 };
 
@@ -26,10 +25,13 @@ let circleTimer;
 
 export const startCircleTimer = (arg) => {
 
-  const circleCutShift = (GAME_CONSTS.CIRCLE_LENGTH / (GAME_CONSTS.GAME_TIME_SEC));
+  let timeInSec;
+  timeInSec = (timeInSec !== undefined) ? timeInSec : (arg.gameTimeMin * 60);
+
+  const circleCutShift = (GAME_CONSTS.CIRCLE_LENGTH / timeInSec);
   circleTimer = setInterval(() => {
-    document.querySelector(`.timer-line`).style.strokeDashoffset = arg.circleCut;
     arg.circleCut += circleCutShift;
+    document.querySelector(`.timer-line`).style.strokeDashoffset = arg.circleCut;
     if (arg.circleCut === GAME_CONSTS.CIRCLE_LENGTH) {
       clearInterval(circleTimer);
     }
@@ -42,11 +44,9 @@ export const stopCircleTimer = () => {
 
 let timer;
 
-const isNumeric = (n) => !isNaN(parseFloat(n)) && isFinite(n);
-
 export const startTimer = (arg) => {
-  if (!isNumeric(arg.gameTimeMin) || !isNumeric(arg.gameTimeSec)) {
-    throw new Error(`passed argument is not a number`);
+  if (!isFinite(arg.gameTimeMin) || !isFinite(arg.gameTimeSec)) {
+    throw new Error(`passed argument is not finite`);
   }
 
   if (arg.gameTimeMin < 0 || arg.gameTimeSec < 0) {
@@ -65,14 +65,20 @@ export const startTimer = (arg) => {
       if (arg.gameTimeMin > 0) {
         arg.gameTimeMin -= 1;
       }
+    } else if (arg.gameTimeMin >= 0 && arg.gameTimeSec > 0) {
+      arg.gameTimeSec -= 1;
     }
+
     arg.perAnswerCounter += 1;
     arg.timeSpentSec += 1;
+    
     let twoDigitSecDisplay = (arg.gameTimeSec < 10) ? `0${arg.gameTimeSec}` : arg.gameTimeSec;
+
+    
 
     document.querySelector(`.timer-value-mins`).innerHTML = arg.gameTimeMin;
     document.querySelector(`.timer-value-secs`).innerHTML = twoDigitSecDisplay;
-    arg.gameTimeSec -= 1;
+    
 
 
     if (arg.gameTimeMin === 0 && arg.gameTimeSec < 30) {
@@ -93,14 +99,7 @@ export const compareUsers = (previousGamesData, userPositionIndex) => {
 };
 
 export const addUserAnswer = (isCorrect, modelState) => {
-
-  let newAnswer;
-  if (isCorrect === true) {
-    newAnswer = modelState.perAnswerCounter;
-  } else {
-    newAnswer = -1;
-  }
-
+  let newAnswer = isCorrect ? modelState.perAnswerCounter : -1;
   modelState.userAnswers.push(newAnswer);
 };
 

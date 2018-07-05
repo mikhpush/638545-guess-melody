@@ -3,6 +3,12 @@ import AbstractView from './abstract-view';
 
 export default class WelcomeScreen extends AbstractView {
 
+  bind() {
+    this.element.querySelector(`.main-play`).addEventListener(`click`, () => {
+      this.onAnswer();
+    });
+  }
+  
   render() {
     return `<section class="main main--welcome">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
@@ -18,12 +24,6 @@ export default class WelcomeScreen extends AbstractView {
 
   onAnswer() {
     Application.showGame();
-  }
-
-  bind() {
-    this.element.querySelector(`.main-play`).addEventListener(`click`, () => {
-      this.onAnswer();
-    });
   }
 }
 

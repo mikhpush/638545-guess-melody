@@ -20,11 +20,10 @@ export default class AbstractView {
     return this._element;
   }
 
-  render() {
-    return this.template;
-  }
-
   bind() {
   }
 
+  render() {
+    return this.template;
+  }
 }

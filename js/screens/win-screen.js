@@ -25,14 +25,14 @@ export default class WinScreen extends AbstractView {
       </div>`;
   }
 
-  onAnswer() {
-    Application.showWelcome();
-  }
-
   bind() {
     this.element.querySelector(`.main-replay`).addEventListener(`click`, () => {
       this.onAnswer();
     });
+  }
+
+  onAnswer() {
+    Application.showWelcome();
   }
 
 }
